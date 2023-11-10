@@ -1,0 +1,51 @@
+.viewinformation-bg-img {
+    height: 140px;
+    background-image: url("../../../assets/images/homepage_bg.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+.viewinformation-common {
+    background-color: white;
+    height: 144px;
+    top: 230px;
+    color: black;
+}
+.viewinformation-left-section-common {
+    float: left;
+    width: 35%;
+    text-align: center;
+}
+.viewinformation-left-section-common img {
+    width: 120px;
+    height: 120px;
+    border-radius: 60%;
+    margin-top: 13px;
+}
+.viewinformation-right-section-common {
+    float: left;
+    width: 65%;
+}
+.viewinformation-right-section-common span {
+    margin-left: 10px;
+    font-size: 13px;
+    font-style: normal;
+}
+
+.viewinformation-bg-null {
+    background-color: #d9d9d9;
+    height: 15px;
+}
+.viewinformation-detail {
+    padding: 30px 0px;
+}
+.viewinformation-detail-name,
+.viewinformation-detail-date,
+.viewinformation-detail-address {
+    margin: 10px 50px;
+}
+.viewinformation-detail-button-update {
+    text-align: center;
+    margin-top: 30px;
+}

@@ -1,0 +1,18 @@
+.wrapper1 {
+    background-color: #d9d9d9;
+
+    &-content {
+        width: 1200px;
+        margin: 0 auto;
+        &__title {
+            text-transform: uppercase;
+        }
+    }
+}
+.wrapper-content__title {
+    padding-top: 30px;
+    padding-bottom: 20px;
+    margin: 0 auto;
+}
+.wrapper-content {
+}

@@ -1,0 +1,81 @@
+.dataAir-chart,
+.dataAir-table {
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    color: black;
+}
+
+.dataAir-chart-detail {
+    height: 400px;
+    background-color: white;
+}
+
+.dataAir-table-detail {
+    background-color: white;
+}
+
+.dataAir-table-detail-record {
+    position: relative;
+    overflow-x: auto;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+        0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.dataAir-table-detail-record,
+.dataAir-table-detail-page {
+    margin-top: 1.5rem;
+}
+
+.dataAir-table-detail-record table th td {
+    border: ridge;
+}
+
+.dataAir-table-detail-page {
+    width: 100%;
+    padding-bottom: 10px;
+}
+
+.a {
+    display: inline;
+    text-decoration: none;
+    padding-right: 10px;
+}
+
+.dataAir-row-detail.created-at {
+    font-weight: normal; /* Để chữ không in đậm */
+}
+
+.dataAir-table-detail-record-table {
+    font-size: 1rem;
+    text-align: left;
+    width: 100%;
+}
+
+.dataAir-table-detail-record-table-title {
+    width: 100%;
+}
+
+.dataAir-table-detail-record-table {
+    border-collapse: collapse;
+}
+
+.dataAir-title-detail,
+.dataAir-row-detail {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+.dataAir-row:nth-child(even) {
+    background-color: #eee;
+}
+
+.dataAir-row:nth-child(odd) {
+    background-color: #fff;
+}
+
+.ataAir-table-detail-page-container {
+    width: 100%;
+}
