@@ -1,10 +1,12 @@
 const UserService = require('../services/UserService')
 const createUser = async (req,res) => {
     try {
-        const { name, email, password, confirmPassword} = req.body
+        const { name, email,phone, password, confirmPassword} = req.body
+        const regexPhoneNumber = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
         const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
         const isCheckEmail = reg.test(email)
-        if (!name || !email || !password || !confirmPassword)
+        const isCheckPhone = regexPhoneNumber.test(phone)
+        if (!name || !email || !password || !confirmPassword || !phone)
         {
             return res.status(200).json({
                 status: 401,
@@ -13,12 +15,17 @@ const createUser = async (req,res) => {
         } else if(!isCheckEmail) {
             return res.status(200).json({
                 status: 401,
-                message: 'The input is email'
+                message: 'The email is invalid'
             })
         } else if(password !== confirmPassword){
             return res.status(200).json({
                 status: 401,
                 message: 'The input is equal confirmPassword'
+            })
+        } else if (!isCheckPhone) {
+            return res.status(200).json({
+                status: 401,
+                message: "The phone is invalid"
             })
         }
          const response = await UserService.createUser(req.body)
@@ -123,11 +130,22 @@ const getDetailUser = async (req, res) => {
         })
     }
 }
+const getInformation = async (req,res) => {
+    try {
+        const response = await UserService.getInformation()
+        return res.status(200).json(response)
+    } catch(e) {
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
 module.exports = {
     createUser,
     loginUser,
     updateUser,
     deleteUser,
     getAllUser,
-    getDetailUser
+    getDetailUser,
+    getInformation
 }
