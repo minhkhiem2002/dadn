@@ -1,10 +1,12 @@
 const User = require('../models/UserModel.js')
 const { genneralAccessToken, genneralRefreshToken } = require('./JwtService')
 const bcrypt = require('bcrypt')
+const jwt  = require('jsonwebtoken');
+const dotenv = require('dotenv');
 
 const createUser = (newUser) => {
     return new Promise(async (resolve, reject) => {
-        const {name, email, password, confirmPassword} = newUser
+        const {name, email,phone, password, confirmPassword} = newUser
         try {
             const checkUser = await User.findOne({
                 email: email
@@ -19,6 +21,7 @@ const createUser = (newUser) => {
             const createdUser = await User.create({
                 name, 
                 email, 
+                phone,
                 password: hash, 
             })
             if (createdUser) {
@@ -170,11 +173,27 @@ const getDetailUser = (id) => {
     })
 }
 
+const getInformation = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            console.log('checkToken', req.headers.token)
+            resolve({
+                status: 'OK',
+                message: 'Get All User SUCCESS',
+               
+            })  
+        } catch(e) {
+            reject(e);
+        }
+    })
+}
+
 module.exports = {
     createUser,
     loginUser,
     updateUser,
     deleteUser,
     getAllUser,
-    getDetailUser
+    getDetailUser,
+    getInformation
 }
