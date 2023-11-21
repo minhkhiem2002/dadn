@@ -6,7 +6,11 @@ const routes = require('./routes')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 
+
+
 dotenv.config()
+
+
 
 // db.connect();
 const app = express();
@@ -31,7 +35,9 @@ app.get('/', (req, res) => {
     res.send('Hello World! 1 2 3');
 })
 
+app.post("/upload", upload.single('image'), (req, res) => {
 
+})
 
 app.use(bodyParser.json())
 routes(app);

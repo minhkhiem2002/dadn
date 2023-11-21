@@ -4,9 +4,10 @@ const bcrypt = require('bcrypt')
 const jwt  = require('jsonwebtoken');
 const dotenv = require('dotenv');
 
+
 const createUser = (newUser) => {
     return new Promise(async (resolve, reject) => {
-        const {name, email,phone, password, confirmPassword} = newUser
+        const {name, email,phone,date, password, confirmPassword} = newUser
         try {
             const checkUser = await User.findOne({
                 email: email
@@ -22,6 +23,7 @@ const createUser = (newUser) => {
                 name, 
                 email, 
                 phone,
+                date,
                 password: hash, 
             })
             if (createdUser) {
@@ -173,20 +175,58 @@ const getDetailUser = (id) => {
     })
 }
 
-const getInformation = () => {
+const getInformation = (id) => {
     return new Promise(async (resolve, reject) => {
         try {
-            console.log('checkToken', req.headers.token)
+            const checkUser = await User.findOne({
+                _id: id
+            })
+            // console.log(checkUser)
+            if (checkUser === null)  {
+                resolve({
+                status: '401',
+                message: 'The user is not undefined'
+                })
+            }
             resolve({
                 status: 'OK',
-                message: 'Get All User SUCCESS',
-               
+                message: 'Get Detail User SUCCESS',
+                data: checkUser
             })  
         } catch(e) {
             reject(e);
         }
     })
 }
+const uploadAvatar = async (id, avatarPath) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+                const checkUser = await User.findOne({
+                    _id: id
+                })
+                if (checkUser === null)  {
+                    resolve({
+                    status: 'OK',
+                    message: 'The user is not undefined'
+                    })
+                }
+                const data = {
+                    avatar: avatarPath
+                }
+                const updateUser = await User.findByIdAndUpdate(id,data, {new: true})
+                console.log(updateUser)
+                resolve({
+                    status: 'OK',
+                    message: 'SUCCESS',
+                    avatarPath: avatarPath,
+                    data: updateUser
+                })  
+    } catch (e) {
+        reject(e);
+    }
+})
+};
+  
 
 module.exports = {
     createUser,
@@ -195,5 +235,6 @@ module.exports = {
     deleteUser,
     getAllUser,
     getDetailUser,
-    getInformation
+    getInformation,
+    uploadAvatar
 }

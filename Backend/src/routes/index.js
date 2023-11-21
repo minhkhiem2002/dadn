@@ -1,5 +1,6 @@
 const UserRouter = require('./UserRouter')
 const FarmRouter = require('./FarmRouter')
+const EquipRouter = require('./EquipRouter')
 
 const routes = (app) => {
     // app.use('/api/user', (req,res) => {

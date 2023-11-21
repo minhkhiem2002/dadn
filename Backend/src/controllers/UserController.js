@@ -1,11 +1,19 @@
 const UserService = require('../services/UserService')
+const jwt = require('jsonwebtoken');
+const uploadCloud = require('../config/cloudinary.config.js');
+
+const uploadCloudAvatar = uploadCloud.single('image');
+
 const createUser = async (req,res) => {
     try {
-        const { name, email,phone, password, confirmPassword} = req.body
+        const { name, email,phone,date, password, confirmPassword} = req.body
         const regexPhoneNumber = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
         const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
+        const regexDate = /^\d{4}\-(0?[1-9]|1[012])\-(0?[1-9]|[12][0-9]|3[01])$/;
+
         const isCheckEmail = reg.test(email)
         const isCheckPhone = regexPhoneNumber.test(phone)
+        const isCheckDate = regexDate.test(date)
         if (!name || !email || !password || !confirmPassword || !phone)
         {
             return res.status(200).json({
@@ -27,10 +35,16 @@ const createUser = async (req,res) => {
                 status: 401,
                 message: "The phone is invalid"
             })
+        } else if (!isCheckEmail) {
+            return res.status(200).json({
+                status: 401,
+                message: "The phone is invalid"
+            })
         }
          const response = await UserService.createUser(req.body)
          return res.status(200).json(response)
     } catch(e){
+        console.log(e)
         return res.status(404).json({
             message: e
         })
@@ -115,6 +129,7 @@ const getAllUser = async (req, res) => {
 }
 const getDetailUser = async (req, res) => {
     try {
+        
         const userId = req.params.id;
         if (!userId) {
             return res.status(200).json({
@@ -132,7 +147,19 @@ const getDetailUser = async (req, res) => {
 }
 const getInformation = async (req,res) => {
     try {
-        const response = await UserService.getInformation()
+        const token = req.headers.token.split(' ')[1]
+        let payload;
+        jwt.verify(token, process.env.ACCESS_TOKEN, function (err,user){
+            if (err) {
+                return res.status(404).json({
+                    message: "The authenication",
+                    status: "ERROR"
+                })
+            }
+             payload  = user 
+        });
+        console.log('ID is',payload.payload.id)
+        const response = await UserService.getInformation(payload.payload.id)
         return res.status(200).json(response)
     } catch(e) {
         return res.status(404).json({
@@ -140,6 +167,37 @@ const getInformation = async (req,res) => {
         })
     }
 }
+
+const updateAvatar = async (req, res) => {
+    console.log(req.file)
+
+    try {
+    
+      const token = req.headers.token.split(' ')[1]
+        let payload;
+        jwt.verify(token, process.env.ACCESS_TOKEN, function (err,user){
+            if (err) {
+                return res.status(404).json({
+                    message: "The authenication",
+                    status: "ERROR"
+                })
+            }
+             payload  = user 
+        });
+        console.log('ID is',payload.payload.id)
+
+      const avatarURL = req.file.path;
+
+      const response = await UserService.uploadAvatar(payload.payload.id, avatarURL);
+  
+      return res.status(200).json(response);
+    } catch (e) {
+        return res.status(404).json({
+            message: e
+        })
+    }
+  };
+
 module.exports = {
     createUser,
     loginUser,
@@ -147,5 +205,7 @@ module.exports = {
     deleteUser,
     getAllUser,
     getDetailUser,
-    getInformation
+    getInformation,
+    uploadCloudAvatar, 
+    updateAvatar,
 }
