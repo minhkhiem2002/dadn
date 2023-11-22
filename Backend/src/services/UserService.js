@@ -25,6 +25,7 @@ const createUser = (newUser) => {
                 phone,
                 date,
                 password: hash, 
+                avatar: 'https://png.pngtree.com/element_our/20200610/ourlarge/pngtree-default-avatar-image_2237213.jpg'
             })
             if (createdUser) {
                 resolve({

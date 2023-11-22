@@ -35,9 +35,7 @@ app.get('/', (req, res) => {
     res.send('Hello World! 1 2 3');
 })
 
-app.post("/upload", upload.single('image'), (req, res) => {
 
-})
 
 app.use(bodyParser.json())
 routes(app);
