@@ -55,7 +55,67 @@ const getDataEquipment = async (req, res) => {
     }
 };
 
+const updateEquipment = async (req, res) => {
+    try {
+        const equipId = req.params.id;
+        const data = req.body
+        console.log(equipId)
+        if (!equipId) {
+            return res.status(200).json({
+                status: 'error',
+                message: 'The equipment is required'
+            })
+        }
+        const response = await DataEquipmentService.updateEquipment(equipId,data)
+        return res.status(200).json(response)
+    } catch(e){
+        console.log(e)
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+const deleteEquipment = async (req, res) => {
+    try {
+        const equipId = req.params.id;
+        if (!equipId) {
+            return res.status(200).json({
+                status: 'error',
+                message: 'The user is required'
+            })
+        }
+        const response = await DataEquipmentService.deleteEquipment(equipId)
+        return res.status(200).json(response)
+    } catch(e){
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+
+const getDetailEquipment = async (req, res) => {
+    try {
+        
+        const equipId = req.params.id;
+        if (!equipId) {
+            return res.status(200).json({
+                status: 'error',
+                message: 'The equipment is required'
+            })
+        }
+        const response = await DataEquipmentService.getDetailEquipment(equipId)
+        return res.status(200).json(response)
+    } catch(e){
+        return res.status(404).json({
+            message: e
+        })
+    }
+}
+
 module.exports = {
     createDataEquipment,
     getDataEquipment,
+    updateEquipment,
+    deleteEquipment,
+    getDetailEquipment
 };

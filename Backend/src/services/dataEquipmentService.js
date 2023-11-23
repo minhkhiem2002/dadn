@@ -44,7 +44,83 @@ const getDataEquipment = (farmId) => {
     });
 };
 
+const updateEquipment = (id,data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const checkEquipment = await DataEquipment.findOne({
+                _id: id
+            })
+            // console.log(checkUser)
+            if (checkEquipment === null)  {
+                resolve({
+                status: 'OK',
+                message: 'The equipment is not defined'
+                })
+            }
+            const updateEquipment = await DataEquipment.findByIdAndUpdate(id,data, {new: true})
+            console.log(updateEquipment)
+            resolve({
+                status: 'OK',
+                message: 'Update Successfully',
+                data: updateEquipment
+            })  
+        } catch(e) {
+            reject(e);
+        }
+    })
+}
+
+const deleteEquipment = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const checkEquipment = await DataEquipment.findOne({
+                _id: id
+            })
+            if (checkEquipment === null)  {
+                resolve({
+                status: 'OK',
+                message: 'The equipment is not defined'
+                })
+            }
+            await DataEquipment.findByIdAndDelete(id)
+            resolve({
+                status: 'OK',
+                message: 'Delete Equipment Successfully',
+            })  
+        } catch(e) {
+            reject(e);
+        }
+    })
+}
+
+const getDetailEquipment = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const checkEquipment = await DataEquipment.findOne({
+                _id: id
+            })
+            // console.log(checkUser)
+            if (checkEquipment === null)  {
+                resolve({
+                status: 'OK',
+                message: 'The Equipment is not defined'
+                })
+            }
+            resolve({
+                status: 'OK',
+                message: 'Get Detail Equipment Successfully',
+                data: checkEquipment
+            })  
+        } catch(e) {
+            reject(e);
+        }
+    })
+}
+
 module.exports = {
     createDataEquipment,
-    getDataEquipment
+    getDataEquipment,
+    updateEquipment,
+    deleteEquipment,
+    getDetailEquipment
 }

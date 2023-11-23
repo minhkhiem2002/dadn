@@ -1,6 +1,6 @@
 const UserRouter = require('./UserRouter')
 const FarmRouter = require('./FarmRouter')
-const EquipRouter = require('./EquipRouter')
+const DataEquipRouter = require('./DataEquipRouter')
 
 const routes = (app) => {
     // app.use('/api/user', (req,res) => {
@@ -8,7 +8,7 @@ const routes = (app) => {
     // })
     app.use('/api/user', UserRouter)
     app.use('/api/admin',FarmRouter)
-    app.use('/api/admin/equip',EquipRouter)
+    app.use('/api/dequip',DataEquipRouter)
 }
 
 module.exports = routes;
