@@ -1,81 +1,16 @@
 .dataTemp-chart,
 .dataTemp-table {
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 300;
-    line-height: normal;
-    color: black;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  color: black;
 }
 
 .dataTemp-chart-detail {
-    height: 400px;
-    background-color: white;
+  height: 350px;
 }
 
 .dataTemp-table-detail {
-    background-color: white;
-}
-
-.dataTemp-table-detail-record {
-    position: relative;
-    overflow-x: auto;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-        0 2px 4px -1px rgba(0, 0, 0, 0.06);
-}
-
-.dataTemp-table-detail-record,
-.dataTemp-table-detail-page {
-    margin-top: 1.5rem;
-}
-
-.dataTemp-table-detail-record table th td {
-    border: ridge;
-}
-
-.dataTemp-table-detail-page {
-    width: 100%;
-    padding-bottom: 10px;
-}
-
-.a {
-    display: inline;
-    text-decoration: none;
-    padding-right: 10px;
-}
-
-.dataTemp-row-detail.created-at {
-    font-weight: normal; /* Để chữ không in đậm */
-}
-
-.dataTemp-table-detail-record-table {
-    font-size: 1rem;
-    text-align: left;
-    width: 100%;
-}
-
-.dataTemp-table-detail-record-table-title {
-    width: 100%;
-}
-
-.dataTemp-table-detail-record-table {
-    border-collapse: collapse;
-}
-
-.dataTemp-title-detail,
-.dataTemp-row-detail {
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: left;
-}
-
-.dataTemp-row:nth-child(even) {
-    background-color: #eee;
-}
-
-.dataTemp-row:nth-child(odd) {
-    background-color: #fff;
-}
-
-.ataTemp-table-detail-page-container {
-    width: 100%;
+  background-color: white;
 }

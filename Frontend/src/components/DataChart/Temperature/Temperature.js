@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import "./style.scss";
-import { Button } from "antd";
 import { http } from "../../../utils/http";
 import * as echarts from "echarts";
+import { Table } from "antd";
 
 export default function Temperature({ onFirstValueChange }) {
   const chartRef = useRef(null);
+  const secondChartRef = useRef(null);
   const [temperatureData, setTemperatureData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
@@ -42,7 +43,7 @@ export default function Temperature({ onFirstValueChange }) {
           dataWithSequence.length > 0 ? dataWithSequence[0].value : 0;
         onFirstValueChange(firstValue);
 
-        //chart
+        //chart 1
         const gaugeOptions = {
           series: [
             {
@@ -148,13 +149,110 @@ export default function Temperature({ onFirstValueChange }) {
               ],
             },
           ],
+          backgroundColor: "#100c2a",
         };
+        const temperatureData = response.data.map((item) => ({
+          date: item.created_at,
+          temperature: item.value,
+        }));
+
+        // chart 2
+        const secondChart = echarts.init(secondChartRef.current);
+
+        const dates = dataWithSequence.map((item) => item.created_at_formatted);
+        const values = temperatureData.map((item) => item.temperature);
+
+        const reversedDates = dates.slice().reverse();
+        const reversedValesAir = values.slice().reverse();
+
+        const secondChartOptions = {
+          title: {
+            left: "1%",
+            textStyle: {
+              color: "#fff",
+            },
+          },
+          tooltip: {
+            trigger: "axis",
+            backgroundColor: "rgba(0, 0, 0, 0.7)",
+            textStyle: {
+              color: "#fff",
+            },
+          },
+          xAxis: {
+            type: "category",
+            data: reversedDates,
+            axisLine: {
+              lineStyle: {
+                color: "#ccc",
+              },
+            },
+            axisLabel: {
+              color: "#ccc",
+            },
+          },
+          yAxis: {
+            type: "value",
+            min: 0,
+            max: 40,
+            axisLine: {
+              lineStyle: {
+                color: "#B9B8CE",
+              },
+            },
+            axisLabel: {
+              color: "#B9B8CE",
+            },
+          },
+          dataZoom: [
+            {
+              type: "inside",
+              start: 0,
+              end: 100,
+            },
+            {
+              start: 0,
+              end: 100,
+              handleSize: "80%",
+              handleStyle: {
+                color: "#fff",
+                shadowBlur: 3,
+                shadowColor: "rgba(0, 0, 0, 0.6)",
+                shadowOffsetX: 2,
+                shadowOffsetY: 2,
+              },
+            },
+          ],
+          series: [
+            {
+              name: "Nhiệt độ",
+              color: "#FBDB0F",
+              type: "line",
+              data: reversedValesAir,
+              markLine: {
+                silent: true,
+                lineStyle: {
+                  color: "#B3B3B3",
+                },
+                data: [
+                  { yAxis: 10 },
+                  { yAxis: 20 },
+                  { yAxis: 30 },
+                  { yAxis: 40 },
+                ],
+              },
+            },
+          ],
+          backgroundColor: "#100c2a",
+        };
+        secondChart.setOption(secondChartOptions);
 
         const chart = echarts.init(chartRef.current);
         chart.setOption(gaugeOptions);
 
         return () => {
           chart.dispose();
+          secondChart.dispose();
         };
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -171,116 +269,61 @@ export default function Temperature({ onFirstValueChange }) {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = temperatureData.slice(indexOfFirstItem, indexOfLastItem);
 
-  //button next and previous
-  const maxPage = Math.ceil(temperatureData.length / itemsPerPage);
-  const paginate = (pageNumber) => {
-    if (pageNumber > 0 && pageNumber <= maxPage) {
-      setCurrentPage(pageNumber);
-    }
-  };
-
   return (
     <div className="container-dataTemp">
       <div className="dataTemp-chart">
         <p>BIỂU ĐỒ DỮ LIỆU CỦA CẢM BIẾN NHIỆT ĐỘ</p>
         <div className="dataTemp-chart-detail" ref={chartRef}></div>
+        <div className="dataTemp-chart-detail" ref={secondChartRef}></div>
       </div>
       <div className="dataTemp-table">
         <p>BẢNG SỐ LIỆU DỮ LIỆU THÔ CỦA CẢM BIẾN NHIỆT ĐỘ</p>
 
         <div className="dataTemp-table-detail">
-          <div className="dataTemp-table-detail-record">
-            <table className="dataTemp-table-detail-record-table">
-              <thead className="dataTemp-table-detail-record-table-title">
-                <tr className="dataTemp-row">
-                  <th scope="col" className="dataTemp-title-detail">
-                    STT
-                  </th>
-                  <th scope="col" className="dataTemp-title-detail">
-                    Mã
-                  </th>
-                  <th scope="col" className="dataTemp-title-detail">
-                    Nhiệt Độ
-                  </th>
-                  <th scope="col" className="dataTemp-title-detail">
-                    Thời Gian Cập Nhật
-                  </th>
-                  <th scope="col" className="dataTemp-title-detail">
-                    Thiết Bị
-                  </th>
-                </tr>
-              </thead>
-              <tbody
-                style={{
-                  height: "900px",
-                  overflowY: "auto",
-                }}
-              >
-                {currentItems.map((item) => (
-                  <tr key={item.id} className="dataTemp-row">
-                    <td className="dataTemp-row-detail">{item.sequence}</td>
-                    <td className="dataTemp-row-detail">{item.id}</td>
-                    <td className="dataTemp-row-detail">{item.value}</td>
-                    <th scope="row" className="dataTemp-row-detail created-at">
-                      {item.created_at_formatted}
-                    </th>
-                    <td className="dataTemp-row-detail">{item.feed_key}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="dataTemp-table-detail-page">
-            <nav className="dataTemp-table-detail-page-container">
-              <ul className="detail">
-                <li className="a">
-                  <Button
-                    onClick={() => paginate(currentPage - 1)}
-                    type="primary"
-                    className={`${
-                      currentPage === 1
-                        ? "cursor-not-allowed"
-                        : "hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700 dark:hover:text-white"
-                    } rounded-l-lg border border-gray-300 bg-white py-2 px-3 leading-tight text-gray-500`}
-                  >
-                    Trang trước
-                  </Button>
-                </li>
-                {Array.from(
-                  {
-                    length: Math.ceil(temperatureData.length / itemsPerPage),
-                  },
-                  (_, index) => (
-                    <li className="a" key={index}>
-                      <Button
-                        onClick={() => paginate(index + 1)}
-                        className={`${
-                          currentPage === index + 1
-                            ? "bg-gray-100 text-gray-700"
-                            : "hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700 dark:hover:text-white"
-                        } border border-gray-300 bg-white py-2 px-3 leading-tight text-gray-500`}
-                      >
-                        {index + 1}
-                      </Button>
-                    </li>
-                  )
-                )}
-                <li className="a">
-                  <Button
-                    onClick={() => paginate(currentPage + 1)}
-                    type="primary"
-                    className={`${
-                      currentPage === maxPage
-                        ? "cursor-not-allowed"
-                        : "hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-gray-700 dark:hover:text-white"
-                    } rounded-r-lg border border-gray-300 bg-white py-2 px-3 leading-tight text-gray-500`}
-                  >
-                    Trang tiếp theo
-                  </Button>
-                </li>
-              </ul>
-            </nav>
-          </div>
+          <Table
+            dataSource={currentItems}
+            pagination={{
+              pageSize: itemsPerPage,
+              total: temperatureData.length,
+              current: currentPage,
+              onChange: (page) => setCurrentPage(page),
+            }}
+            scroll={{ y: 700 }}
+          >
+            <Table.Column
+              title="STT"
+              dataIndex="sequence"
+              key="sequence"
+              className="dataTemp-title-detail"
+              width={80}
+            />
+            <Table.Column
+              title="Mã"
+              dataIndex="id"
+              key="id"
+              className="dataTemp-title-detail"
+              width={400}
+            />
+            <Table.Column
+              title="Nhiệt Độ"
+              dataIndex="value"
+              key="value"
+              className="dataTemp-title-detail"
+            />
+            <Table.Column
+              title="Thời Gian Cập Nhật"
+              dataIndex="created_at_formatted"
+              key="created_at_formatted"
+              className="dataTemp-title-detail created-at"
+            />
+            <Table.Column
+              title="Thiết Bị"
+              dataIndex="feed_key"
+              key="feed_key"
+              className="dataTemp-title-detail"
+              width={150}
+            />
+          </Table>
         </div>
       </div>
       <br />
