@@ -1,10 +1,12 @@
-import React from "react";
-import { DownOutlined } from "@ant-design/icons";
+import React, { useCallback, useEffect, useState } from "react";
 import "./style.scss";
 import { NavLink, Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import { Select, Space } from "antd";
 export default function Header() {
     const navigate = useNavigate();
+    const userId = localStorage.getItem("userId");
+    const [imgURL, setImgURL] = useState("");
 
     const handleChangeHeader = (value) => {
         console.log(`selected ${value}`);
@@ -21,6 +23,24 @@ export default function Header() {
             navigate("/login");
         }
     };
+
+    const fetchData = useCallback(async () => {
+        try {
+            if (userId) {
+                const apiURL = `http://localhost:3001/api/user/get-detail/${userId}`;
+                const res = await axios.get(apiURL);
+                if (res) {
+                    setImgURL(res?.data.data.avatar);
+                }
+            }
+        } catch (error) {
+            console.log("error fetching", error);
+        }
+    }, [userId]);
+
+    useEffect(() => {
+        fetchData();
+    }, [fetchData]);
     return (
         <div className="header">
             <div className="bg">
@@ -45,10 +65,7 @@ export default function Header() {
 
                 <div className="col-xl-auto col-md-auto info">
                     <Link className="" to="/information-personal">
-                        <img
-                            src="https://upload.wikimedia.org/wikipedia/vi/a/a7/Happier_Than_Ever.jpeg"
-                            alt="avatar"
-                        />
+                        <img src={imgURL} alt="avatar" />
                     </Link>
                     <Space>
                         <Select

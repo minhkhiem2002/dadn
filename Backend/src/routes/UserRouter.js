@@ -21,9 +21,9 @@ router.post('/login', userController.loginUser)
 
 router.get('/get-info', userController.getInformation)
 router.put('/update-user/:id', userController.updateUser)
-router.delete('/delete-user/:id',authMiddleware, userController.deleteUser)
+router.delete('/delete-user/:id', userController.deleteUser)
 router.get('/getAll', userController.getAllUser)
-router.get('/get-detail/:id',authMiddleware, userController.getDetailUser)
+router.get('/get-detail/:id', userController.getDetailUser)
 router.post('/upload-avatar',uploader.single('images'), userController.updateAvatar);
 
 module.exports = router;
