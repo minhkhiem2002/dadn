@@ -100,6 +100,10 @@ const updateUser = (id,data) => {
                 message: 'The user is not undefined'
                 })
             }
+            console.log(data.password)
+            if (data.password) {
+                data.password = bcrypt.hashSync(data.password, 10)
+            }
             const updateUser = await User.findByIdAndUpdate(id,data, {new: true})
             console.log(updateUser)
             resolve({

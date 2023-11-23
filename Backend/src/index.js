@@ -11,8 +11,6 @@ const cors = require('cors')
 dotenv.config()
 
 
-
-// db.connect();
 const app = express();
 
 app.use(cors(
