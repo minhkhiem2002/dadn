@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Login = () => {
+
     const navigate = useNavigate();
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
@@ -88,32 +89,32 @@ const Login = () => {
                         />
                     </Form.Item>
 
-                    <Form.Item>
-                        <Button
-                            type="primary"
-                            htmlType="submit"
-                            className="wrapper__register-button"
-                        >
-                            Đăng nhập
-                        </Button>
-                    </Form.Item>
-                </Form>
-            </div>
-            <div className="wrapper__navigate">
-                <div className="wrapper__to-register">
-                    Chưa có tài khoản?
-                    <Link to={"/register"}>
-                        <span>Đăng ký</span>
-                    </Link>
-                </div>
-                <div className="wrapper__forgot">
-                    <Link to={"/forgot-password"}>
-                        <span>Quên mật khẩu</span>
-                    </Link>
-                </div>
-            </div>
-        </>
-    );
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="wrapper__register-button"
+            >
+              Đăng nhập
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
+      <div className="wrapper__navigate">
+        <div className="wrapper__to-register">
+          Chưa có tài khoản?
+          <Link to={"/register"}>
+            <span>Đăng ký</span>
+          </Link>
+        </div>
+        <div className="wrapper__forgot">
+          <Link to={"/forgot-password"}>
+            <span>Quên mật khẩu</span>
+          </Link>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default Login;
