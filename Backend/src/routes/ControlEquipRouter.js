@@ -8,4 +8,5 @@ router.get('/getAll/:id', controlEquipmentController.getControlEquipment);
 router.put('/update-equipment/:id', controlEquipmentController.updateEquipment);
 router.delete('/delete-equipment/:id', controlEquipmentController.deleteEquipment);
 router.get('/getDetail/:id', controlEquipmentController.getDetailEquipment);
+
 module.exports = router;
