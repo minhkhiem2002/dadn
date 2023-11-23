@@ -19,7 +19,7 @@ export default function CreateFarmForm({ onCreateFarm, editData }) {
 
   const handleSubmit = async (values) => {
     try {
-      const token = localStorage.getItem("token");
+      const accessToken = localStorage.getItem("accessToken");
       let response;
 
       if (editData) {
@@ -28,7 +28,7 @@ export default function CreateFarmForm({ onCreateFarm, editData }) {
           values,
           {
             headers: {
-              token: `Bearer ${token}`,
+              token: `Bearer ${accessToken}`,
             },
           }
         );
@@ -38,7 +38,7 @@ export default function CreateFarmForm({ onCreateFarm, editData }) {
           values,
           {
             headers: {
-              token: `Bearer ${token}`,
+              token: `Bearer ${accessToken}`,
             },
           }
         );

@@ -17,12 +17,12 @@ export default function AdManagementFarm() {
 
   const getFarms = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const accessToken = localStorage.getItem("accessToken");
       const result = await axios.get(
         "http://localhost:3001/api/admin/getAllFarm",
         {
           headers: {
-            token: `Bearer ${token}`,
+            token: `Bearer ${accessToken}`,
           },
         }
       );
@@ -42,13 +42,13 @@ export default function AdManagementFarm() {
 
   const handleDelete = async (farmId) => {
     try {
-      const token = localStorage.getItem("token");
+      const accessToken = localStorage.getItem("accessToken");
 
       await axios.delete(
         `http://localhost:3001/api/admin/deleteFarm/${farmId}`,
         {
           headers: {
-            token: `Bearer ${token}`,
+            token: `Bearer ${accessToken}`,
           },
         }
       );
@@ -66,12 +66,12 @@ export default function AdManagementFarm() {
 
   const handleExpandRow = async (farmId) => {
     try {
-      const token = localStorage.getItem("token");
+      const accessToken = localStorage.getItem("accessToken");
       const result = await axios.get(
         `http://localhost:3001/api/admin/getFarm/${farmId}`,
         {
           headers: {
-            token: `Bearer ${token}`,
+            token: `Bearer ${accessToken}`,
           },
         }
       );
@@ -92,7 +92,9 @@ export default function AdManagementFarm() {
       dataIndex: "image",
       key: "image",
       align: "center",
-      render: (text) => <img src={text} alt="Farm" style={{ width: "50px" }} />,
+      render: (text, record) => (
+        <img src={text} alt="Farm" style={{ width: "50px", height: "50px" }} />
+      ),
     },
     {
       title: "Tên nông trại",
