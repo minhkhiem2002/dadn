@@ -5,89 +5,89 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Login = () => {
-  const navigate = useNavigate();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
 
-  const handleLogin = async (e) => {
-    try {
-      const apiUrl = "http://localhost:3001/api/user/login";
-      const data = {
-        email: email,
-        password: password,
-      };
-      const response = await axios.post(apiUrl, data);
-      console.log(response);
-      if (response) {
-        localStorage.setItem("userId", response.data.userId);
-        localStorage.setItem("role", response.data.role);
-        localStorage.setItem("token", response.data.access_token);
-        console.log(response);
-        if (!response.data.role && response.data.status == "200") {
-          navigate("/");
-        } else if (response.data.role && response.data.status == "200") {
-          navigate("/admin-management-devices");
-        } else {
-          alert("Login failed");
+    const navigate = useNavigate();
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
 
-          // Chỗ này tự làm toast message vô
+    const handleLogin = async (e) => {
+        try {
+            const apiUrl = "http://localhost:3001/api/user/login";
+            const data = {
+                email: email,
+                password: password,
+            };
+            const response = await axios.post(apiUrl, data);
+            console.log(response);
+            if (response) {
+                localStorage.setItem("userId", response.data.userId);
+                localStorage.setItem("role", response.data.role);
+                localStorage.setItem("accessToken", response.data.access_token);
+
+                if (!response.data.role && response.data.status === 200) {
+                    navigate("/");
+                } else if (response.data.role && response.data.status === 200) {
+                    navigate("/admin-management-devices");
+                } else {
+                    alert("Login failed");
+                    // Chỗ này tự làm toast message vô
+                }
+            }
+        } catch (err) {
+            console.error(err);
         }
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-  return (
-    <>
-      <h2 className="wrapper__register-title">Đăng nhập</h2>
-      <div>
-        <Form
-          name="register-form"
-          layout="vertical"
-          wrapperCol={{
-            span: 16,
-          }}
-          style={{
-            maxWidth: "700px",
-          }}
-          initialValues={{
-            remember: true,
-          }}
-          className="wrapper__form"
-          onFinish={handleLogin}
-          autoComplete="off"
-        >
-          <Form.Item
-            label="Email"
-            name="email"
-            rules={[
-              {
-                required: true,
-                message: "Vui lòng nhập email",
-              },
-            ]}
-          >
-            <Input
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email"
-            />
-          </Form.Item>
+    };
+    return (
+        <>
+            <h2 className="wrapper__register-title">Đăng nhập</h2>
+            <div>
+                <Form
+                    name="register-form"
+                    layout="vertical"
+                    wrapperCol={{
+                        span: 16,
+                    }}
+                    style={{
+                        maxWidth: "700px",
+                    }}
+                    initialValues={{
+                        remember: true,
+                    }}
+                    className="wrapper__form"
+                    onFinish={handleLogin}
+                    autoComplete="off"
+                >
+                    <Form.Item
+                        label="Email"
+                        name="email"
+                        rules={[
+                            {
+                                required: true,
+                                message: "Vui lòng nhập email",
+                            },
+                        ]}
+                    >
+                        <Input
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Email"
+                        />
+                    </Form.Item>
 
-          <Form.Item
-            label="Mật khẩu"
-            name="password"
-            rules={[
-              {
-                required: true,
-                message: "Vui lòng nhập mật khẩu!",
-              },
-            ]}
-          >
-            <Input.Password
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Mật khẩu"
-            />
-          </Form.Item>
+                    <Form.Item
+                        label="Mật khẩu"
+                        name="password"
+                        rules={[
+                            {
+                                required: true,
+                                message: "Vui lòng nhập mật khẩu!",
+                            },
+                        ]}
+                    >
+                        <Input.Password
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Mật khẩu"
+                        />
+                    </Form.Item>
 
           <Form.Item>
             <Button
