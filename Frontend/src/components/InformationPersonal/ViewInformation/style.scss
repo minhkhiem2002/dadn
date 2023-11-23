@@ -16,12 +16,38 @@
     float: left;
     width: 35%;
     text-align: center;
+    position: relative;
+    cursor: pointer;
+    &:hover {
+        .upload-avt {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
 }
 .viewinformation-left-section-common img {
     width: 120px;
     height: 120px;
     border-radius: 60%;
     margin-top: 13px;
+}
+.upload-avt {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    background-color: rgba(12, 6, 6, 0.374);
+    left: 50%;
+    border-radius: 50%;
+    top: 54%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    font-weight: 500;
+    color: white;
+    visibility: hidden;
+    transition: all 0.2s linear;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .viewinformation-right-section-common {
     float: left;
@@ -48,4 +74,35 @@
 .viewinformation-detail-button-update {
     text-align: center;
     margin-top: 30px;
+    .wrapper-button {
+        & * {
+            margin: 0 10px;
+        }
+    }
+}
+
+.viewinformation-right-section-common {
+    .user-info {
+        &__name {
+            font-size: 32px;
+        }
+        &__email {
+            display: flex;
+            align-items: center;
+            span {
+                font-size: 22px;
+                margin: 0;
+            }
+            &--detail {
+                display: inline-block;
+                margin-left: 10px !important;
+            }
+        }
+    }
+}
+
+.viewinformation-detail-date {
+    .ant-picker {
+        width: 100%;
+    }
 }

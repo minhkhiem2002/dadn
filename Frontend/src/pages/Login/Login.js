@@ -1,42 +1,39 @@
 import { Button, Form, Input } from "antd";
-import React, {useState} from "react";
-import './index.scss';
+import React, { useState } from "react";
+import "./index.scss";
 import { Link, useNavigate } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
 
 const Login = () => {
     const navigate = useNavigate();
-    const [email, setEmail] = useState()
-    const [password, setPassword] = useState()
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
 
     const handleLogin = async (e) => {
         try {
-        const apiUrl = 'http://localhost:3001/api/user/login'
-        const data = {
-            email: email,
-            password: password
-        }
-        const response = await axios.post(apiUrl, data)
-        console.log(response)
-        if (response)
-        {   
-            localStorage.setItem('userId', response.data.userId)
-            localStorage.setItem('role', response.data.role)
-            if (!response.data.role && response.data.status == '200'){
+            const apiUrl = "http://localhost:3001/api/user/login";
+            const data = {
+                email: email,
+                password: password,
+            };
+            const response = await axios.post(apiUrl, data);
+            console.log(response);
+            if (response) {
+                localStorage.setItem("userId", response.data.userId);
+                localStorage.setItem("role", response.data.role);
+                localStorage.setItem("accessToken", response.data.access_token);
 
-                navigate('/')
+                if (!response.data.role && response.data.status === 200) {
+                    navigate("/");
+                } else if (response.data.role && response.data.status === 200) {
+                    navigate("/admin-management-devices");
+                } else {
+                    alert("Login failed");
+                    // Chỗ này tự làm toast message vô
+                }
             }
-            else if (response.data.role && response.data.status == '200'){
-                navigate('/admin-management-devices')
-            }
-            else {
-                alert('Login failed')
-
-                // Chỗ này tự làm toast message vô
-            }
-        }
         } catch (err) {
-            console.error(err)
+            console.error(err);
         }
     };
     return (
@@ -69,7 +66,10 @@ const Login = () => {
                             },
                         ]}
                     >
-                        <Input onChange = {(e) => setEmail(e.target.value)} placeholder="Email" />
+                        <Input
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="Email"
+                        />
                     </Form.Item>
 
                     <Form.Item
@@ -82,7 +82,10 @@ const Login = () => {
                             },
                         ]}
                     >
-                        <Input.Password onChange = {(e) => setPassword(e.target.value)} placeholder="Mật khẩu" />
+                        <Input.Password
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="Mật khẩu"
+                        />
                     </Form.Item>
 
                     <Form.Item>
