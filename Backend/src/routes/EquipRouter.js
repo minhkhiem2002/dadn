@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const farmController = require('../controllers/FarmController');
+const dataEquipmentController = require('../controllers/dataEquipmentController');
 const { authMiddleware } = require('../middleWare/authMiddleWare');
 
-// router.post('/createFarm',authMiddleware, farmController.createFarm)
-// router.put('/updateFarm/:id',authMiddleware, farmController.updateFarm)
-// router.delete('/deleteFarm/:id',authMiddleware, farmController.deleteFarm)
+router.post('/post/:id', dataEquipmentController.createDataEquipment);
+router.get('/get/:id', dataEquipmentController.getDataEquipment);
 
 module.exports = router;

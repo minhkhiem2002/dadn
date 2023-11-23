@@ -8,6 +8,7 @@ const routes = (app) => {
     // })
     app.use('/api/user', UserRouter)
     app.use('/api/admin',FarmRouter)
+    app.use('/api/admin/equip',EquipRouter)
 }
 
 module.exports = routes;
