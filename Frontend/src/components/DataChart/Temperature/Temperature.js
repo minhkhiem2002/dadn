@@ -4,7 +4,7 @@ import { http } from "../../../utils/http";
 import * as echarts from "echarts";
 import { Table } from "antd";
 
-export default function Temperature({ onFirstValueChange }) {
+export default function Temperature() {
   const chartRef = useRef(null);
   const secondChartRef = useRef(null);
   const [temperatureData, setTemperatureData] = useState([]);
@@ -41,7 +41,7 @@ export default function Temperature({ onFirstValueChange }) {
 
         const firstValue =
           dataWithSequence.length > 0 ? dataWithSequence[0].value : 0;
-        onFirstValueChange(firstValue);
+        // onFirstValueChange(firstValue);
 
         //chart 1
         const gaugeOptions = {
@@ -272,12 +272,16 @@ export default function Temperature({ onFirstValueChange }) {
   return (
     <div className="container-dataTemp">
       <div className="dataTemp-chart">
-        <p>BIỂU ĐỒ DỮ LIỆU CỦA CẢM BIẾN NHIỆT ĐỘ</p>
+        <div className="dataTemp-chart-title">
+          <p>BIỂU ĐỒ DỮ LIỆU CỦA CẢM BIẾN NHIỆT ĐỘ</p>
+        </div>
         <div className="dataTemp-chart-detail" ref={chartRef}></div>
         <div className="dataTemp-chart-detail" ref={secondChartRef}></div>
       </div>
       <div className="dataTemp-table">
-        <p>BẢNG SỐ LIỆU DỮ LIỆU THÔ CỦA CẢM BIẾN NHIỆT ĐỘ</p>
+        <div className="dataTemp-table-title">
+          <p>BẢNG SỐ LIỆU DỮ LIỆU THÔ CỦA CẢM BIẾN NHIỆT ĐỘ</p>
+        </div>
 
         <div className="dataTemp-table-detail">
           <Table
