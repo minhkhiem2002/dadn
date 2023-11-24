@@ -7,7 +7,7 @@ class Http {
       timeout: 10000,
       headers: {
         "Content-Type": "application/json",
-        "X-AIO-Key": "aio_xZhw92koUj2ne8kE7X1Qw9ZaM7Bx",
+        "X-AIO-Key": "aio_wMxS78V2LYnzzEyQd31xPJCr8u6L",
       },
     });
 
@@ -16,7 +16,7 @@ class Http {
       timeout: 10000,
       headers: {
         "Content-Type": "application/json",
-        "X-AIO-Key": "aio_xZhw92koUj2ne8kE7X1Qw9ZaM7Bx",
+        "X-AIO-Key": "aio_wMxS78V2LYnzzEyQd31xPJCr8u6L",
       },
     });
     this.apiV1 = axios.create({
@@ -24,7 +24,7 @@ class Http {
       timeout: 10000,
       headers: {
         "Content-Type": "application/json",
-        "X-AIO-Key": "aio_xZhw92koUj2ne8kE7X1Qw9ZaM7Bx",
+        "X-AIO-Key": "aio_wMxS78V2LYnzzEyQd31xPJCr8u6L",
       },
     });
     this.apiV2 = axios.create({
@@ -32,7 +32,7 @@ class Http {
       timeout: 10000,
       headers: {
         "Content-Type": "application/json",
-        "X-AIO-Key": "aio_xZhw92koUj2ne8kE7X1Qw9ZaM7Bx",
+        "X-AIO-Key": "aio_wMxS78V2LYnzzEyQd31xPJCr8u6L",
       },
     });
   }

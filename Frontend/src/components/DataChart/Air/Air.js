@@ -4,7 +4,7 @@ import { http } from "../../../utils/http";
 import * as echarts from "echarts";
 import { Table } from "antd";
 
-export default function Air({ onFirstValueChangeAir }) {
+export default function Air() {
   const chartRef = useRef(null);
   const secondChartRef = useRef(null);
   const [airData, setAirData] = useState([]);
@@ -40,7 +40,7 @@ export default function Air({ onFirstValueChangeAir }) {
 
         const firstValueAir =
           dataWithSequence.length > 0 ? dataWithSequence[0].value : 0;
-        onFirstValueChangeAir(firstValueAir);
+        // onFirstValueChangeAir(firstValueAir);
 
         const gaugeOptions = {
           series: [
@@ -138,11 +138,11 @@ export default function Air({ onFirstValueChangeAir }) {
 
         const dates = dataWithSequence.map((item) => item.created_at_formatted);
         const values = airData.map((item) => item.air);
-        console.log(values);
+        // console.log(values);
 
         const reversedDates = dates.slice().reverse();
         const reversedValesAir = values.slice().reverse();
-        console.log(reversedDates);
+        // console.log(reversedDates);
 
         const secondChartOptions = {
           xAxis: {
@@ -216,12 +216,17 @@ export default function Air({ onFirstValueChangeAir }) {
   return (
     <div className="container-dataAir">
       <div className="dataAir-chart">
-        <p>BIỂU ĐỒ DỮ LIỆU CỦA CẢM BIẾN ĐỘ ẨM</p>
+        <div className="dataTemp-chart-title">
+          <p>BIỂU ĐỒ DỮ LIỆU CỦA CẢM BIẾN ĐỘ ẨM</p>
+        </div>
+
         <div className="dataAir-chart-detail" ref={chartRef}></div>
         <div className="dataAir-chart-detail" ref={secondChartRef}></div>
       </div>
       <div className="dataAir-table">
-        <p>BẢNG SỐ LIỆU DỮ LIỆU THÔ CỦA CẢM BIẾN ĐỘ ẨM</p>
+        <div className="dataTemp-table-title">
+          <p>BẢNG SỐ LIỆU DỮ LIỆU THÔ CỦA CẢM BIẾN ĐỘ ẨM</p>
+        </div>
 
         <div className="dataAir-table-detail">
           <Table

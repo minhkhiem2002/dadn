@@ -43,6 +43,21 @@ const getDataEquipment = (farmId) => {
         }
     });
 };
+const getAll = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const dataEquipment = await DataEquipment.find();
+
+            resolve({
+                status: 200,
+                message: 'Get Data Equipment from Farm successfully',
+                data: dataEquipment,
+            });
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
 
 const updateEquipment = (id,data) => {
     return new Promise(async (resolve, reject) => {
@@ -122,5 +137,6 @@ module.exports = {
     getDataEquipment,
     updateEquipment,
     deleteEquipment,
-    getDetailEquipment
+    getDetailEquipment,
+    getAll
 }
