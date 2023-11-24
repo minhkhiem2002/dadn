@@ -15,9 +15,6 @@ const AdminHeader = () => {
                     <Link className="wrapper-header__right--farms" to="/admin-management-farms">
                         Quản lý nông trại
                     </Link>
-                    <Link className="wrapper-header__right--devices" to="/admin-management-devices">
-                        Quản lý thiết bị
-                    </Link>
                     <Link className="wrapper-header__right--users" to="/admin-management-users">
                         Quản lý người dùng
                     </Link>

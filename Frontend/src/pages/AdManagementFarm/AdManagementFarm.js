@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./style.scss";
 import axios from "axios";
-import { Table, Button } from "antd";
+import { Table, Button, Modal } from "antd";
 import CreateFarmForm from "./CreateFarmForm";
+import { Link, useNavigate } from "react-router-dom";
 import { PlusOutlined } from "@ant-design/icons";
 
 export default function AdManagementFarm() {
+  console.log("aaaaaaaaaaaaaaaaa");
+  const navigate = useNavigate();
   const [farms, setFarms] = useState([]);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [editData, setEditData] = useState(null);
@@ -59,10 +62,13 @@ export default function AdManagementFarm() {
     }
   };
 
+
   const handleCreateFarm = () => {
     setEditData(null);
     setShowCreateForm(true);
   };
+
+  const [modalVisible, setModalVisible] = useState(false);
 
   const handleExpandRow = async (farmId) => {
     try {
@@ -75,10 +81,15 @@ export default function AdManagementFarm() {
           },
         }
       );
-      setExpandedFarmInfo(result.data);
+      console.log(result.data.data)
+      setExpandedFarmInfo(result.data.data);
+      setModalVisible(true);
     } catch (error) {
       // console.error("Lỗi", error);
     }
+  };
+  const closeModal = () => {
+    setModalVisible(false);
   };
 
   const columns = [
@@ -118,6 +129,7 @@ export default function AdManagementFarm() {
           <Button type="primary" danger onClick={() => handleEdit(record._id)}>
             Chỉnh sửa
           </Button>{" "}
+          <Link to={`/admin-management-devices/${record._id}`}><Button type="primary">Xem thiết bị</Button></Link>{" "}{" "}
           <Button onClick={() => handleDelete(record._id)}>Xoá</Button>
         </div>
       ),
@@ -133,18 +145,7 @@ export default function AdManagementFarm() {
           <Table
             columns={columns}
             expandable={{
-              expandedRowRender: (result) => (
-                <div>
-                  <img src={result.image} alt="" />
-                  <p>ID: {result?._id}</p>
-                  <p>Tên: {result.name}</p>
-                  <p>Địa chỉ: {result.address}</p>
-                  <p>Mô tả: {result.description}</p>
-                  <p>Ngày tạo: {result.createdAt}</p>
-                  <p>Ngày cập nhật: {result.updatedAt}</p>
-                  <p>{result.__v}</p>
-                </div>
-              ),
+              expandedRowRender: () => null,
               rowExpandable: (result) => result._id === result?._id,
               onExpand: (_, result) => handleExpandRow(result._id),
             }}
@@ -167,6 +168,25 @@ export default function AdManagementFarm() {
             />
           )}
         </div>
+        <Modal
+          title="Farm Details"
+          visible={modalVisible}
+          onCancel={closeModal}
+          footer={null}
+        >
+          {expandedFarmInfo && (
+            <div>
+              <img src={expandedFarmInfo.image} style={{ display: 'block', margin: 'auto', maxWidth: '100%', height: 'auto' }} alt="" />
+              <p>ID: {expandedFarmInfo?._id}</p>
+              <p>Tên: {expandedFarmInfo.name}</p>
+              <p>Địa chỉ: {expandedFarmInfo.address}</p>
+              <p>Mô tả: {expandedFarmInfo.description}</p>
+              <p>Ngày tạo: {expandedFarmInfo.createdAt}</p>
+              <p>Ngày cập nhật: {expandedFarmInfo.updatedAt}</p>
+              <p>{expandedFarmInfo.__v}</p>
+            </div>
+          )}
+        </Modal>
       </div>
     </div>
   );

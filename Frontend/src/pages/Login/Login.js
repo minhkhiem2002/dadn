@@ -21,12 +21,12 @@ const Login = () => {
             if (response) {
                 localStorage.setItem("userId", response.data.userId);
                 localStorage.setItem("role", response.data.role);
-                localStorage.setItem("accessToken", response.data.access_token);
+                localStorage.setItem("token", response.data.access_token);
 
                 if (!response.data.role && response.data.status === 200) {
                     navigate("/");
                 } else if (response.data.role && response.data.status === 200) {
-                    navigate("/admin-management-devices");
+                    navigate("/admin-management-farms");
                 } else {
                     alert("Login failed");
                     // Chỗ này tự làm toast message vô

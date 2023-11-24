@@ -31,7 +31,9 @@ const createControlEquipment = async (req, res) => {
 
 const getControlEquipment = async (req, res) => {
     try {
+        console.log("bbbb")
         const farmId = req.params.id;
+        console.log(farmId)
 
         if (!farmId) {
             return res.status(400).json({
@@ -50,7 +52,18 @@ const getControlEquipment = async (req, res) => {
         });
     }
 };
-
+const getAll = async (req, res) => {
+    try {
+        const response = await ControlEquipmentService.getAll();
+        return res.status(response.status).json(response);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: 'Internal Server Error',
+            error: error.message,
+        });
+    }
+};
 const updateEquipment = async (req, res) => {
     try {
         const equipId = req.params.id;
@@ -113,5 +126,6 @@ module.exports = {
     getControlEquipment,
     updateEquipment,
     deleteEquipment,
-    getDetailEquipment
+    getDetailEquipment,
+    getAll
 };

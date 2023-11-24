@@ -33,8 +33,21 @@ const createDataEquipment = async (req, res) => {
     }
 };
 
+const getAll = async (req, res) => {
+    try {
+        const response = await DataEquipmentService.getAll();
+        return res.status(response.status).json(response);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: 'Internal Server Error',
+            error: error.message,
+        });
+    }
+};
 const getDataEquipment = async (req, res) => {
     try {
+        console.log("aaa")
         const farmId = req.params.id;
 
         if (!farmId) {
@@ -117,5 +130,6 @@ module.exports = {
     getDataEquipment,
     updateEquipment,
     deleteEquipment,
-    getDetailEquipment
+    getDetailEquipment,
+    getAll
 };

@@ -90,6 +90,14 @@ export default function RouteComponent() {
             ),
         },
         {
+            path: "/admin-management-devices/:farmID",
+            element: (
+                <AdminLayout>
+                    <AdManagementDevices />
+                </AdminLayout>
+            ),
+        },
+        {
             path: "/admin-management-farms",
             element: (
                 <AdminLayout>
