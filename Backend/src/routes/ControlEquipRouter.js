@@ -3,6 +3,7 @@ const router = express.Router();
 const controlEquipmentController = require('../controllers/controlEquipmentController');
 const { authMiddleware } = require('../middleWare/authMiddleWare');
 
+router.get('/getAll/', controlEquipmentController.getAll);
 router.post('/post/:id', controlEquipmentController.createControlEquipment);
 router.get('/getAll/:id', controlEquipmentController.getControlEquipment);
 router.put('/update-equipment/:id', controlEquipmentController.updateEquipment);

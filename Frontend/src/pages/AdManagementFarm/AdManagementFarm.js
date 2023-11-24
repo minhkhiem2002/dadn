@@ -3,9 +3,12 @@ import "./style.scss";
 import axios from "axios";
 import { Table, Button } from "antd";
 import CreateFarmForm from "./CreateFarmForm";
+import { Link, useNavigate } from "react-router-dom";
 import { PlusOutlined } from "@ant-design/icons";
 
 export default function AdManagementFarm() {
+  console.log("aaaaaaaaaaaaaaaaa");
+  const navigate = useNavigate();
   const [farms, setFarms] = useState([]);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [editData, setEditData] = useState(null);
@@ -58,6 +61,7 @@ export default function AdManagementFarm() {
       console.error("Lỗi khi xoá farm:", error);
     }
   };
+
 
   const handleCreateFarm = () => {
     setEditData(null);
@@ -116,6 +120,7 @@ export default function AdManagementFarm() {
           <Button type="primary" danger onClick={() => handleEdit(record._id)}>
             Chỉnh sửa
           </Button>{" "}
+          <Link to={`/admin-management-devices/${record._id}`}><Button type="primary">Xem thiết bị</Button></Link>{" "}{" "}
           <Button onClick={() => handleDelete(record._id)}>Xoá</Button>
         </div>
       ),
