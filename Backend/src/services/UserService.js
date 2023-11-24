@@ -231,7 +231,110 @@ const uploadAvatar = async (id, avatarPath) => {
     }
 })
 };
+const checkValidCode = async(email, code) => {
+        try {
+            const user = await User.findOne({ email });
+            if (!user) {
+                return false;
+            }
+            else if (user.passwordResetCode != code) {
+                return false;
+            }
+            return true;
+        } catch (e) {
+            throw e;
+        }
+}
+const getUserByEmail = async (email) => {
+    try {
+      const user = await User.findOne({ email });
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  };
   
+  const updateResetCodeByEmail = async (id, resetCode) => {
+    try {
+      const updatedUser = await User.findByIdAndUpdate(
+        id,
+        { passwordResetCode: resetCode },
+        { new: true }
+      );
+      return updatedUser;
+    } catch (error) {
+      throw error;
+    }
+  };
+  const checkResetCode = async (email, resetCode) => {
+        return new Promise( async (resolve, reject) => {
+        try {
+        const checkUser = await User.findOne({ email });
+        console.log('Find',checkUser);
+        if (!checkUser) {
+            resolve ({
+                status: 401,
+                message: "User not found"
+            })
+        }
+        else if (checkUser.passwordResetCode != resetCode){
+            resolve ({
+                status: 401,
+                message: "Code is not match"
+            })
+        }
+            resolve({
+                status: 200,
+                message: 'Right Code',
+            }) 
+        } catch (e) {
+        reject(e);
+        }
+        }
+    )};
+
+    const resetPasswordCode = async (id, password, newPassword) => {
+        return new Promise(async (resolve, reject) => {
+          try {
+            const user = await User.findOne({ _id: id });
+      
+            if (!user) {
+              resolve({
+                status: 401,
+                message: 'User does not exist',
+              });
+              return;
+            }
+      
+            const comparePassword = bcrypt.compareSync(password, user.password);
+            console.log(comparePassword)
+            if (!comparePassword) {
+              resolve({
+                status: 401,
+                message: 'Password is incorrect',
+              });
+              return;
+            }
+      
+            const hash = bcrypt.hashSync(newPassword, 10);
+      
+            const updatedUser = await User.findByIdAndUpdate(
+              id,
+              { password: hash },
+              { new: true }
+            );
+      
+            resolve({
+              status: 200,
+              message: 'Reset Password Successfully',
+              data: updatedUser,
+            });
+          } catch (error) {
+            reject(error);
+          }
+        });
+      };
+      
 
 module.exports = {
     createUser,
@@ -241,5 +344,10 @@ module.exports = {
     getAllUser,
     getDetailUser,
     getInformation,
-    uploadAvatar
+    uploadAvatar,
+    getUserByEmail,
+    updateResetCodeByEmail,
+    checkResetCode,
+    resetPasswordCode,
+    checkValidCode
 }

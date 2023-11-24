@@ -26,4 +26,8 @@ router.get('/getAll', userController.getAllUser)
 router.get('/get-detail/:id', userController.getDetailUser)
 router.post('/upload-avatar',uploader.single('images'), userController.updateAvatar);
 
+router.post('/send-reset-code', userController.sendResetCodeEmail);
+router.post('/checkValidCode',userController.checkValidCode)
+router.post('/reset-password-code/:id', userController.resetPasswordCode);
+
 module.exports = router;
