@@ -16,6 +16,7 @@ import FarmInformationPage from "../pages/FarmInformationPage";
 import StatisticalPage from "../pages/StatisticalPage";
 
 export default function RouteComponent() {
+
   const routeElements = useRoutes([
     {
       path: "/",
@@ -115,4 +116,5 @@ export default function RouteComponent() {
     },
   ]);
   return routeElements;
+
 }
