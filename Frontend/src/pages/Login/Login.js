@@ -27,7 +27,7 @@ const Login = () => {
                 if (!response.data.role && response.data.status === 200) {
                     navigate("/");
                 } else if (response.data.role && response.data.status === 200) {
-                    navigate("/admin-management-devices");
+                    navigate("/admin-management-farms");
                 } else {
                     alert("Login failed");
                     // Chỗ này tự làm toast message vô

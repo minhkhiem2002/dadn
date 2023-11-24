@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./index.scss";
 import axios from "axios";
-import { Table, Button } from "antd";
+import { Table, Button, Modal} from "antd";
 import { useParams } from 'react-router-dom';
 import CreateDataEquipmentForm from "./CreateDataEquipmentForm";
 import CreateControlEquipmentForm from "./CreateControlEquipmentForm";
@@ -21,6 +21,14 @@ export default function AdManagementDevice() {
 
     const [expandedDataEquipmentInfo, setExpandedDataEquipmentInfo] = useState(null);
     const [expandedControlEquipmentInfo, setExpandedControlEquipmentInfo] = useState(null);
+
+    const closeModal = () => {
+      setModalVisible(false);
+    };
+    const closeModal1 = () => {
+      setModalVisible1(false);
+    };
+
     useEffect(() => {
       console.log("aaaaaaaaaaaaaaaaa");
       getDataEquipments();
@@ -87,7 +95,8 @@ export default function AdManagementDevice() {
         console.error("Lỗi khi xoá dataEquipment:", error);
       }
     };
-  
+    const [modalVisible, setModalVisible] = useState(false);
+    const [modalVisible1, setModalVisible1] = useState(false);
     const handleExpandRow = async (dataEquipmentId) => {
       try {
         const token = localStorage.getItem("token");
@@ -99,7 +108,8 @@ export default function AdManagementDevice() {
             },
           }
         );
-        setExpandedDataEquipmentInfo(result.data);
+        setExpandedDataEquipmentInfo(result.data.data);
+        setModalVisible(true);
       } catch (error) {
         // console.error("Lỗi", error);
       }
@@ -171,7 +181,8 @@ export default function AdManagementDevice() {
             },
           }
         );
-        setExpandedControlEquipmentInfo(result.data);
+        setExpandedControlEquipmentInfo(result.data.data);
+        setModalVisible1(true)
       } catch (error) {
         // console.error("Lỗi", error);
       }
@@ -275,24 +286,7 @@ export default function AdManagementDevice() {
             <Table
               columns={column1}
               expandable={{
-                expandedRowRender: (result) => (
-                  <div>
-                    <img src={result.image} alt="" />
-                    <p>ID: {result?._id}</p>
-                    <p>Key: {result?.key}</p>
-                    <p>Name: {result?.name}</p>
-                    <p>Farm ID: {result?.farmId}</p>
-                    <p>Min: {result?.min}</p>
-                    <p>Max: {result?.max}</p>
-                    <p>Min_Action: {result?.min_action}</p>
-                    <p>Max_Action: {result?.max_action}</p>
-                    <p>Type: {result?.typ}</p>
-                    <p>Auto: {result?.auto}</p>
-                    <p>createdAt: {result?.createdAt}</p>
-                    <p>updatedAt: {result?.updatedAt}</p>
-                    <p>{result.__v}</p>
-                  </div>
-                ),
+                expandedRowRender: () => null,
                 rowExpandable: (result) => result._id === result?._id,
                 onExpand: (_, result) => handleExpandRow(result._id),
               }}
@@ -300,7 +294,6 @@ export default function AdManagementDevice() {
             />
           </div>
           <div className="wrapper-content__createfarm centered-button">
-
             {(farmID === null || farmID === undefined) && (showCreateDataEquipmentForm  &&
               (
               <CreateDataEquipmentForm
@@ -333,20 +326,7 @@ export default function AdManagementDevice() {
             <Table
               columns={column2}
               expandable={{
-                expandedRowRender: (result) => (
-                  <div>
-                    <img src={result.image} alt="" />
-                    <p>ID: {result?._id}</p>
-                    <p>Key: {result?.key}</p>
-                    <p>Name: {result?.name}</p>
-                    <p>Farm ID: {result?.farmId}</p>
-                    <p>Type: {result?.typ}</p>
-                    <p>Status: {result?.status}</p>
-                    <p>createdAt: {result?.createdAt}</p>
-                    <p>updatedAt: {result?.updatedAt}</p>
-                    <p>{result.__v}</p>
-                  </div>
-                ),
+                expandedRowRender: () => null,
                 rowExpandable: (result) => result._id === result?._id,
                 onExpand: (_, result) => handleExpandRow1(result._id),
               }}
@@ -381,6 +361,50 @@ export default function AdManagementDevice() {
           )
             )}
           </div>
+          <Modal
+          title="Farm Details"
+          visible={modalVisible}
+          onCancel={closeModal}
+          footer={null}
+        >
+          {expandedDataEquipmentInfo && (
+            <div>
+                <p>ID: {expandedDataEquipmentInfo?._id}</p>
+                <p>Key: {expandedDataEquipmentInfo?.key}</p>
+                <p>Name: {expandedDataEquipmentInfo?.name}</p>
+                <p>Farm ID: {expandedDataEquipmentInfo?.farmId}</p>
+                <p>Min: {expandedDataEquipmentInfo?.min}</p>
+                <p>Max: {expandedDataEquipmentInfo?.max}</p>
+                <p>Min_Action: {expandedDataEquipmentInfo?.min_action}</p>
+                <p>Max_Action: {expandedDataEquipmentInfo?.max_action}</p>
+                <p>Type: {expandedDataEquipmentInfo?.typ}</p>
+                <p>Auto: {expandedDataEquipmentInfo?.auto}</p>
+                <p>createdAt: {expandedDataEquipmentInfo?.createdAt}</p>
+                <p>updatedAt: {expandedDataEquipmentInfo?.updatedAt}</p>
+                <p>{expandedDataEquipmentInfo.__v}</p>
+            </div>
+          )}
+        </Modal>
+        <Modal
+          title="Farm Details"
+          visible={modalVisible1}
+          onCancel={closeModal1}
+          footer={null}
+        >
+          {expandedControlEquipmentInfo && (
+            <div>
+                <p>ID: {expandedControlEquipmentInfo?._id}</p>
+                <p>Key: {expandedControlEquipmentInfo?.key}</p>
+                <p>Name: {expandedControlEquipmentInfo?.name}</p>
+                <p>Farm ID: {expandedControlEquipmentInfo?.farmId}</p>
+                <p>Type: {expandedControlEquipmentInfo?.typ}</p>
+                <p>Status: {expandedControlEquipmentInfo?.status}</p>
+                <p>createdAt: {expandedControlEquipmentInfo?.createdAt}</p>
+                <p>updatedAt: {expandedControlEquipmentInfo?.updatedAt}</p>
+                <p>{expandedControlEquipmentInfo.__v}</p>
+            </div>
+          )}
+        </Modal>
         </div>
       </div>
     );
