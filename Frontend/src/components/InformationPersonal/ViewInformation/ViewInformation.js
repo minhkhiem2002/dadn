@@ -13,12 +13,12 @@ export default function ViewInformation() {
     const [newName, setNewName] = useState("");
     const [newPhone, setNewPhone] = useState("");
     const [birthday, setBirthday] = useState(null);
+    const [newBirthday, setNewBirthday] = useState("");
     const [openModal, setOpenModal] = useState(false);
     const [imgURL, setImgURL] = useState("");
     const [fileList, setFileList] = useState([]);
     const [loading, setLoading] = useState(false);
     const dateFormat = "DD/MM/YYYY";
-    const defaultDateFormat = "YYYY-MM-DD";
     useEffect(() => {
         const storedUserId = localStorage.getItem("userId");
         if (storedUserId !== null) {
@@ -36,7 +36,7 @@ export default function ViewInformation() {
                     setUserData(res?.data.data);
                     setNewName(res?.data.data.name);
                     setNewPhone(res?.data.data.phone);
-                    setBirthday(res?.data.data.date);
+                    setBirthday(dayjs(res.data.data.date, dateFormat));
                     setImgURL(res?.data.data.avatar);
                 }
             }
@@ -55,6 +55,7 @@ export default function ViewInformation() {
                     {
                         name: newName,
                         phone: newPhone,
+                        date: newBirthday,
                     }
                 );
                 if (res) {
@@ -65,10 +66,11 @@ export default function ViewInformation() {
             }
             setIsUpdating(false);
         }
-    }, [isUpdating, newName, newPhone, userId]);
+    }, [isUpdating, newBirthday, newName, newPhone, userId]);
 
     const handleChangeDate = (_, value) => {
-        console.log("date", value);
+        setNewBirthday(value);
+        setBirthday(dayjs(value, dateFormat));
     };
 
     const handleCancel = () => {
@@ -176,8 +178,8 @@ export default function ViewInformation() {
                         <DatePicker
                             onChange={handleChangeDate}
                             disabled={!isUpdating}
+                            value={birthday}
                             format={dateFormat}
-                            value={dayjs(birthday, defaultDateFormat)}
                         />
                     </div>
                     <div className="viewinformation-detail-address">
