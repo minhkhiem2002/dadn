@@ -1,39 +1,53 @@
 import React, {useState} from "react";
 import "./index.scss";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, DatePicker } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
+import dayjs from "dayjs";
+import Message from "../../components/Message";
 
 const Register = () => {
     const navigate = useNavigate();
-    const [name, setName] = useState()
-    const [email, setEmail] = useState()
-    const [password, setPassword] = useState()
+    const [name, setName] = useState();
+    const [email, setEmail] = useState();
+    const [phone, setPhone] = useState();
+    const [password, setPassword] = useState();
+    const [birthday, setBirthday] = useState(null);
+    const [date, setDate] = useState("");
     const [confirmPassword, setconfirmPassword] = useState()
 
     const handleRegister = async (e) => {
         try {
             const apiUrl = 'http://localhost:3001/api/user/signup'
             const data = {
-                name: name,
-                email: email,
-                password: password,
-                confirmPassword: confirmPassword
+                name,
+                email,
+                phone,
+                date,
+                password,
+                confirmPassword
             }
             const response = await axios.post(apiUrl, data)
             console.log(response)
             if (response) {
-                if (response.data.status == 200) {
+                if (response.data.status === 200) {
+                    Message.sendSuccess("Đăng ký thành công");
                     navigate('/login')
                 }
-                else if (response.data.status == 401){
-                    alert(response.data.message)
+                else if (response.data.status === 401){
+                    Message.sendError(response.data.message)
                 }
             }
         } catch (err) {
             console.error(err)
         }
     };
+
+    const handleChangeDate = (_, value) => {
+        setDate(value);
+        setBirthday(dayjs(value, "DD/MM/YYYY"));
+    }
+
     return (
         <>
             <h2 className="wrapper__register-title">Đăng ký</h2>
@@ -78,6 +92,36 @@ const Register = () => {
                         ]}
                     >
                         <Input onChange = {(e) => setEmail(e.target.value)} placeholder="Email" />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Số điện thoại"
+                        name="phone"
+                        rules={[
+                            {
+                                required: true,
+                                message: "Vui lòng nhập số điện thoại của bạn",
+                            },
+                        ]}
+                    >
+                        <Input onChange = {(e) => setPhone(e.target.value)} placeholder="Số điện thoại" />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Ngày sinh"
+                        name="date"
+                        rules={[
+                            {
+                                required: true,
+                                message: "Vui lòng nhập ngày sinh của bạn",
+                            },
+                        ]}
+                    >
+                        <DatePicker
+                            onChange={handleChangeDate}
+                            value={birthday}
+                            format={"DD/MM/YYYY"}
+                        />
                     </Form.Item>
 
                     <Form.Item
