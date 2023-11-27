@@ -1,5 +1,5 @@
 // import React from 'react'
-import { useRoutes } from "react-router-dom";
+import { useRoutes, useNavigate } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout/MainLayout";
 import HomePage from "../pages/HomePage";
 import LoginLayout from "../layouts/LoginLayout/LoginLayout";
@@ -16,8 +16,28 @@ import FarmInformationPage from "../pages/FarmInformationPage";
 import StatisticalPage from "../pages/StatisticalPage";
 import OTPInputPage from "../pages/OTPInputPage/OTPInputPage";
 import ResetPassword from "../pages/ResetPassword/ResetPassword";
+import { useEffect } from "react";
 
 export default function RouteComponent() {
+    const navigate = useNavigate();
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+
+        const allowedRoutesWithoutToken = [
+            "/register",
+            "/forgot-password",
+            "/confirm-otp",
+            "/reset-password",
+        ];
+
+        if (
+            !token &&
+            !allowedRoutesWithoutToken.includes(window.location.pathname)
+        ) {
+            navigate("/login");
+        }
+    }, [navigate]);
+
     const routeElements = useRoutes([
         {
             path: "/",
