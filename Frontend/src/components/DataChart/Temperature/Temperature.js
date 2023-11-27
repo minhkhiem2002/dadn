@@ -52,8 +52,8 @@ export default function Temperature() {
               startAngle: 200,
               endAngle: -20,
               min: 0,
-              max: 60,
-              splitNumber: 12,
+              max: 50,
+              splitNumber: 10,
               itemStyle: {
                 color: "#FFAB91",
               },
@@ -115,7 +115,7 @@ export default function Temperature() {
               startAngle: 200,
               endAngle: -20,
               min: 0,
-              max: 60,
+              max: 50,
               itemStyle: {
                 color: "#FD7347",
               },
@@ -194,7 +194,7 @@ export default function Temperature() {
           yAxis: {
             type: "value",
             min: 0,
-            max: 40,
+            max: 50,
             axisLine: {
               lineStyle: {
                 color: "#B9B8CE",
@@ -239,6 +239,7 @@ export default function Temperature() {
                   { yAxis: 20 },
                   { yAxis: 30 },
                   { yAxis: 40 },
+                  { yAxis: 50 },
                 ],
               },
             },
@@ -309,7 +310,7 @@ export default function Temperature() {
               width={400}
             />
             <Table.Column
-              title="Nhiệt Độ"
+              title="Nhiệt Độ (°C)"
               dataIndex="value"
               key="value"
               className="dataTemp-title-detail"

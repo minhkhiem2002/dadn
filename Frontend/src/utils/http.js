@@ -7,7 +7,7 @@ class Http {
       timeout: 10000,
       headers: {
         "Content-Type": "application/json",
-        "X-AIO-Key": "aio_wMxS78V2LYnzzEyQd31xPJCr8u6L",
+        "X-AIO-Key": "aio_gPNg99ZwcC7NY9AjphM9rE51xcx0",
       },
     });
 
@@ -16,7 +16,7 @@ class Http {
       timeout: 10000,
       headers: {
         "Content-Type": "application/json",
-        "X-AIO-Key": "aio_wMxS78V2LYnzzEyQd31xPJCr8u6L",
+        "X-AIO-Key": "aio_gPNg99ZwcC7NY9AjphM9rE51xcx0",
       },
     });
     this.apiV1 = axios.create({
@@ -24,7 +24,7 @@ class Http {
       timeout: 10000,
       headers: {
         "Content-Type": "application/json",
-        "X-AIO-Key": "aio_wMxS78V2LYnzzEyQd31xPJCr8u6L",
+        "X-AIO-Key": "aio_gPNg99ZwcC7NY9AjphM9rE51xcx0",
       },
     });
     this.apiV2 = axios.create({
@@ -32,7 +32,23 @@ class Http {
       timeout: 10000,
       headers: {
         "Content-Type": "application/json",
-        "X-AIO-Key": "aio_wMxS78V2LYnzzEyQd31xPJCr8u6L",
+        "X-AIO-Key": "aio_gPNg99ZwcC7NY9AjphM9rE51xcx0",
+      },
+    });
+    this.apiV3 = axios.create({
+      baseURL: "https://io.adafruit.com/api/v2/leminhkhiem110/feeds/",
+      timeout: 10000,
+      headers: {
+        "Content-Type": "application/json",
+        "X-AIO-Key": "aio_gPNg99ZwcC7NY9AjphM9rE51xcx0",
+      },
+    });
+    this.apiV4 = axios.create({
+      baseURL: "https://io.adafruit.com/api/v2/leminhkhiem110/feeds/",
+      timeout: 10000,
+      headers: {
+        "Content-Type": "application/json",
+        "X-AIO-Key": "aio_gPNg99ZwcC7NY9AjphM9rE51xcx0",
       },
     });
   }
