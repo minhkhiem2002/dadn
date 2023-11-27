@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const uploadCloud = require('../config/cloudinary.config.js');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
+const User = require('../models/UserModel.js')
 
 const uploadCloudAvatar = uploadCloud.single('image');
 
@@ -241,6 +242,7 @@ const updateAvatar = async (req, res) => {
                 message: "Not a valid input"
             })
         }
+        const user = await User.findOne({ email });
         const response = await UserService.checkValidCode(email,passwordResetCode)
         console.log("Response is", response)
         if (response) {
