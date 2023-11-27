@@ -248,7 +248,8 @@ const updateAvatar = async (req, res) => {
         if (response) {
             return res.status(200).json({
                 status: 200,
-                message: "Code is matching"    
+                message: "Code is matching"  ,
+                data: user  
             })
         }
         else {
