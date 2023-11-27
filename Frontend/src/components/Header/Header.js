@@ -1,28 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
 import "./style.scss";
-import { NavLink, Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
-import { Select, Space } from "antd";
+import { Menu, Dropdown } from "antd";
 export default function Header() {
-    const navigate = useNavigate();
     const userId = localStorage.getItem("userId");
     const [imgURL, setImgURL] = useState("");
-
-    const handleChangeHeader = (value) => {
-        console.log(`selected ${value}`);
-        if (value === "0") {
-            navigate("/");
-        }
-        if (value === "1") {
-            navigate("/information-personal");
-        }
-        if (value === "2") {
-            navigate("/information-personal/change-passwd");
-        }
-        if (value === "3") {
-            navigate("/login");
-        }
-    };
 
     const fetchData = useCallback(async () => {
         try {
@@ -37,6 +20,28 @@ export default function Header() {
             console.log("error fetching", error);
         }
     }, [userId]);
+
+    const handleLogout = () => {
+        localStorage.removeItem("userId");
+        localStorage.removeItem("role");
+        localStorage.removeItem("token");
+    };
+
+    const menu = (
+        <Menu>
+            <Menu.Item key="1">
+                <Link to="/information-personal">Thông tin cá nhân</Link>
+            </Menu.Item>
+            <Menu.Item key="2">
+                <Link to="/information-personal/change-passwd">
+                    Thay đổi mật khẩu
+                </Link>
+            </Menu.Item>
+            <Menu.Item key="3" onClick={handleLogout} danger>
+                <Link to="/login">Đăng xuất</Link>
+            </Menu.Item>
+        </Menu>
+    );
 
     useEffect(() => {
         fetchData();
@@ -64,60 +69,11 @@ export default function Header() {
                 </div>
 
                 <div className="col-xl-auto col-md-auto info">
-                    <Link className="" to="/information-personal">
-                        <img src={imgURL} alt="avatar" />
-                    </Link>
-                    <Space>
-                        <Select
-                            defaultValue="0"
-                            style={{ width: 100 }}
-                            onChange={handleChangeHeader}
-                            options={[
-                                {
-                                    value: "0",
-                                    label: (
-                                        <NavLink to="/">
-                                            <span style={{ color: "black" }}>
-                                                Nam
-                                            </span>
-                                        </NavLink>
-                                    ),
-                                },
-                                {
-                                    value: "1",
-                                    label: (
-                                        <NavLink to="/information-personal">
-                                            <span style={{ color: "black" }}>
-                                                Thông tin cá nhân
-                                            </span>
-                                        </NavLink>
-                                    ),
-                                },
-                                {
-                                    value: "2",
-                                    label: (
-                                        <NavLink to="/information-personal/change-passwd">
-                                            <span style={{ color: "black" }}>
-                                                Thay đổi mật khẩu
-                                            </span>
-                                        </NavLink>
-                                    ),
-                                },
-                                {
-                                    value: "3",
-                                    label: (
-                                        <NavLink to="/login">
-                                            <span style={{ color: "black" }}>
-                                                Đăng xuất
-                                            </span>
-                                        </NavLink>
-                                    ),
-                                },
-                            ]}
-                        />
-                    </Space>
-                    {/* <p>Nam</p>
-                    <DownOutlined /> */}
+                    <Dropdown overlay={menu} placement="bottomRight" arrow>
+                        <Link className="" to="/information-personal">
+                            <img src={imgURL} alt="avatar" />
+                        </Link>
+                    </Dropdown>
                 </div>
             </div>
         </div>
