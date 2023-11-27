@@ -49,8 +49,8 @@ export default function Air() {
               startAngle: 180,
               endAngle: 0,
               min: 0,
-              max: 120,
-              splitNumber: 12,
+              max: 100,
+              splitNumber: 10,
               itemStyle: {
                 color: "#58D9F9",
                 shadowColor: "rgba(0,138,255,0.45)",
@@ -108,7 +108,7 @@ export default function Air() {
                 offsetCenter: [0, "35%"],
                 valueAnimation: true,
                 formatter: function (value) {
-                  return "{value|" + value.toFixed(1) + "}{unit|g/m}";
+                  return "{value|" + value.toFixed(1) + "}{unit|%}";
                 },
                 rich: {
                   value: {
@@ -217,7 +217,7 @@ export default function Air() {
     <div className="container-dataAir">
       <div className="dataAir-chart">
         <div className="dataTemp-chart-title">
-          <p>BIỂU ĐỒ DỮ LIỆU CỦA CẢM BIẾN ĐỘ ẨM</p>
+          <p>BIỂU ĐỒ DỮ LIỆU CỦA CẢM BIẾN ĐỘ ẨM KHỘNG KHÍ</p>
         </div>
 
         <div className="dataAir-chart-detail" ref={chartRef}></div>
@@ -225,7 +225,7 @@ export default function Air() {
       </div>
       <div className="dataAir-table">
         <div className="dataTemp-table-title">
-          <p>BẢNG SỐ LIỆU DỮ LIỆU THÔ CỦA CẢM BIẾN ĐỘ ẨM</p>
+          <p>BẢNG SỐ LIỆU DỮ LIỆU THÔ CỦA CẢM BIẾN ĐỘ ẨM KHỘNG KHÍ</p>
         </div>
 
         <div className="dataAir-table-detail">
@@ -255,7 +255,7 @@ export default function Air() {
               width={400}
             />
             <Table.Column
-              title="Độ Ẩm"
+              title="Độ Ẩm Không Khí (%)"
               dataIndex="value"
               key="value"
               className="dataAir-title-detail"
