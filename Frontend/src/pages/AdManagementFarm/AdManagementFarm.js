@@ -20,12 +20,12 @@ export default function AdManagementFarm() {
 
   const getFarms = async () => {
     try {
-      const accessToken = localStorage.getItem("accessToken");
+      const token = localStorage.getItem("token");
       const result = await axios.get(
         "http://localhost:3001/api/admin/getAllFarm",
         {
           headers: {
-            token: `Bearer ${accessToken}`,
+            token: `Bearer ${token}`,
           },
         }
       );
@@ -45,13 +45,13 @@ export default function AdManagementFarm() {
 
   const handleDelete = async (farmId) => {
     try {
-      const accessToken = localStorage.getItem("accessToken");
+      const token = localStorage.getItem("token");
 
       await axios.delete(
         `http://localhost:3001/api/admin/deleteFarm/${farmId}`,
         {
           headers: {
-            token: `Bearer ${accessToken}`,
+            token: `Bearer ${token}`,
           },
         }
       );
@@ -72,12 +72,12 @@ export default function AdManagementFarm() {
 
   const handleExpandRow = async (farmId) => {
     try {
-      const accessToken = localStorage.getItem("accessToken");
+      const token = localStorage.getItem("token");
       const result = await axios.get(
         `http://localhost:3001/api/admin/getFarm/${farmId}`,
         {
           headers: {
-            token: `Bearer ${accessToken}`,
+            token: `Bearer ${token}`,
           },
         }
       );

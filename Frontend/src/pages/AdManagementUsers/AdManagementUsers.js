@@ -3,7 +3,7 @@ import "./index.scss";
 import axios from "axios";
 import { Table, Button, Modal, Form, Input } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import moment from "moment";
+import dayjs from "dayjs";
 import Message from "../../components/Message";
 
 const AdManagementUsers = () => {
@@ -90,7 +90,7 @@ const AdManagementUsers = () => {
             dataIndex: "date",
             key: "dob",
             align: "center",
-            render: (text, record) => moment(record.date).format("DD/MM/YYYY"),
+            render: (text, record) => dayjs(record.date, "DD/MM/YYYY").format("DD/MM/YYYY"),
         },
         {
             title: "Email",
