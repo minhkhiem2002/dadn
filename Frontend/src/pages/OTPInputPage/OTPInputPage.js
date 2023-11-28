@@ -5,25 +5,24 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Message from "../../components/Message";
 
-const ForgotPassword = () => {
+const OTPInputPage = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-    const handleForgotPassword = async (value) => {
+    const handleConfirmOTP = async (value) => {
         try {
-            const { email } = value;
-            localStorage.setItem("emailToReset", email);
-            const apiURL = "http://localhost:3001/api/user/send-reset-code";
+            const { otp } = value;
+            const email = localStorage.getItem("emailToReset");
+            const apiURL = "http://localhost:3001/api/user/checkValidCode";
             setLoading(true);
             const res = await axios.post(apiURL, {
                 email,
+                passwordResetCode: otp,
             });
-            if (res?.data.status === "OK") {
-                Message.sendSuccess(
-                    "Vui lòng kiểm tra email của bạn để có thể lấy mã OTP"
-                );
-                navigate("/confirm-otp");
+            if (res?.data.status === 200) {
+                Message.sendSuccess("Vui lòng cập nhật mật khẩu mới");
+                localStorage.setItem("idReset", res?.data.data._id);
+                navigate("/reset-password");
             } else {
-                console.log(res);
                 Message.sendError("Đã có lỗi xảy ra, vui lòng thử lại");
             }
         } catch (error) {
@@ -36,7 +35,7 @@ const ForgotPassword = () => {
         <Spin tip="Loading" size="large" spinning={loading}>
             <h2 className="wrapper__register-title">Lấy lại mật khẩu</h2>
             <span className="wrapper__intro">
-                Vui lòng nhập email đăng ký của bạn để có thể đặt lại mật khẩu
+                Vui lòng nhập email mã OTP được gửi qua email của bạn
             </span>
             <div>
                 <Form
@@ -52,20 +51,20 @@ const ForgotPassword = () => {
                         remember: true,
                     }}
                     className="wrapper__form"
-                    onFinish={handleForgotPassword}
+                    onFinish={handleConfirmOTP}
                     autoComplete="off"
                 >
                     <Form.Item
-                        label="Email"
-                        name="email"
+                        label="Mã OTP"
+                        name="otp"
                         rules={[
                             {
                                 required: true,
-                                message: "Vui lòng nhập email của bạn",
+                                message: "Vui lòng nhập mã OTP của bạn",
                             },
                         ]}
                     >
-                        <Input placeholder="Email" />
+                        <Input placeholder="OTP" />
                     </Form.Item>
 
                     <Form.Item>
@@ -96,4 +95,4 @@ const ForgotPassword = () => {
     );
 };
 
-export default ForgotPassword;
+export default OTPInputPage;

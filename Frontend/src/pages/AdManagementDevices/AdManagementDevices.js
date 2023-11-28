@@ -37,13 +37,13 @@ export default function AdManagementDevice() {
   
     const getDataEquipments = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const accessToken = localStorage.getItem("accessToken");
         var result;
         if(farmID){result = await axios.get(
           `http://localhost:3001/api/dequip/getAll/${farmID}`,
           {
             headers: {
-              token: `Bearer ${token}`,
+              token: `Bearer ${accessToken}`,
             },
           }
         );}
@@ -51,7 +51,7 @@ export default function AdManagementDevice() {
           "http://localhost:3001/api/dequip/getAll",
           {
             headers: {
-              token: `Bearer ${token}`,
+              token: `Bearer ${accessToken}`,
             },
           }
         );
@@ -79,13 +79,13 @@ export default function AdManagementDevice() {
     };
     const handleDelete = async (dataEquipmentId) => {
       try {
-        const token = localStorage.getItem("token");
+        const accessToken = localStorage.getItem("accessToken");
   
         await axios.delete(
           `http://localhost:3001/api/dequip/delete-equipment/${dataEquipmentId}`,
           {
             headers: {
-              token: `Bearer ${token}`,
+              token: `Bearer ${accessToken}`,
             },
           }
         );
@@ -99,12 +99,12 @@ export default function AdManagementDevice() {
     const [modalVisible1, setModalVisible1] = useState(false);
     const handleExpandRow = async (dataEquipmentId) => {
       try {
-        const token = localStorage.getItem("token");
+        const accessToken = localStorage.getItem("accessToken");
         const result = await axios.get(
           `http://localhost:3001/api/dequip/getDetail/${dataEquipmentId}`,
           {
             headers: {
-              token: `Bearer ${token}`,
+              token: `Bearer ${accessToken}`,
             },
           }
         );
@@ -117,13 +117,13 @@ export default function AdManagementDevice() {
 
     const getControlEquipments = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const accessToken = localStorage.getItem("accessToken");
         var result;
         if(farmID){result = await axios.get(
           `http://localhost:3001/api/cequip/getAll/${farmID}`,
           {
             headers: {
-              token: `Bearer ${token}`,
+              token: `Bearer ${accessToken}`,
             },
           }
         );}
@@ -131,7 +131,7 @@ export default function AdManagementDevice() {
           "http://localhost:3001/api/cequip/getAll",
           {
             headers: {
-              token: `Bearer ${token}`,
+              token: `Bearer ${accessToken}`,
             },
           }
         );
@@ -151,13 +151,13 @@ export default function AdManagementDevice() {
 
     const handleDelete1 = async (controlEquipmentId) => {
       try {
-        const token = localStorage.getItem("token");
+        const accessToken = localStorage.getItem("accessToken");
   
         await axios.delete(
           `http://localhost:3001/api/cequip/delete-equipment/${controlEquipmentId}`,
           {
             headers: {
-              token: `Bearer ${token}`,
+              token: `Bearer ${accessToken}`,
             },
           }
         );
@@ -172,12 +172,12 @@ export default function AdManagementDevice() {
   
     const handleExpandRow1 = async (controlEquipmentId) => {
       try {
-        const token = localStorage.getItem("token");
+        const accessToken = localStorage.getItem("accessToken");
         const result = await axios.get(
           `http://localhost:3001/api/cequip/getDetail/${controlEquipmentId}`,
           {
             headers: {
-              token: `Bearer ${token}`,
+              token: `Bearer ${accessToken}`,
             },
           }
         );

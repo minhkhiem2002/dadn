@@ -103,9 +103,7 @@ export default function AdManagementFarm() {
       dataIndex: "image",
       key: "image",
       align: "center",
-      render: (text, record) => (
-        <img src={text} alt="Farm" style={{ width: "50px", height: "50px" }} />
-      ),
+      render: (text) => <img src={text} alt="Farm" style={{ width: "50px" }} />,
     },
     {
       title: "Tên nông trại",
