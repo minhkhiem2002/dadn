@@ -21,7 +21,7 @@ import { useEffect } from "react";
 export default function RouteComponent() {
     const navigate = useNavigate();
     useEffect(() => {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("accessToken");
 
         const allowedRoutesWithoutToken = [
             "/register",

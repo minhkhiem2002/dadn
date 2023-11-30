@@ -1,52 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, Modal } from "antd";
 import axios from "axios";
 import "./index.scss";
 
-export default function CreateControlEquipmentForm({ onUpdateControlEquipment, editData ,farmID}) {
+export default function CreateControlEquipmentForm({ onUpdateControlEquipment, visible, setVisible , farmID}) {
   const [form] = Form.useForm();
-
-  useEffect(() => {
-    if (editData) {
-      form.setFieldsValue({
-        name: editData.name,
-        key: editData.key,
-        typ: editData.typ,
-        farmId: editData.farmId,
-        status: editData.status,
-      });
-    }
-  }, [editData, form]);
 
   const handleSubmit = async (values) => {
     try {
-      const token = localStorage.getItem("token");
-      let response;
-
-      if (editData) {
-        response = await axios.put(
-          `http://localhost:3001/api/cequip/update-equipment/${editData._id}`,
-          values,
-          {
-            headers: {
-              token: `Bearer ${token}`,
-            },
-          }
-        );
-      } else {
-        response = await axios.post(
+      const accessToken = localStorage.getItem("accessToken");
+      let response = await axios.post(
           `http://localhost:3001/api/cequip/post/${farmID}`,
           values,
           {
             headers: {
-              token: `Bearer ${token}`,
+              token: `Bearer ${accessToken}`,
             },
           }
-        );
-      }
-
-      // console.log(response.data);
-      onUpdateControlEquipment(response.data);
+      );
+      
+      onUpdateControlEquipment();
+      setVisible(false);
       form.resetFields();
     } catch (error) {
       // console.error(error);
@@ -55,10 +29,16 @@ export default function CreateControlEquipmentForm({ onUpdateControlEquipment, e
 
   const handleCancel = () => {
     form.resetFields();
-    onUpdateControlEquipment(null);
+    setVisible(false);
   };
 
   return (
+    <Modal
+      open={visible}
+      title="Thêm thiết bị điều khiển"
+      onCancel={handleCancel}
+      footer={null}
+    >
     <Form form={form} layout="vertical" onFinish={handleSubmit}>
       <Form.Item label="Name" name="name" rules={[{ required: true }]}>
         <Input placeholder="Input name ..." />
@@ -75,7 +55,7 @@ export default function CreateControlEquipmentForm({ onUpdateControlEquipment, e
       <div className="centered-button">
         <Form.Item>
           <Button type="primary" htmlType="submit">
-            {editData ? "Cập nhật" : "Thêm"}
+            Thêm
           </Button>{" "}
           <Button danger onClick={handleCancel}>
             Huỷ
@@ -83,5 +63,6 @@ export default function CreateControlEquipmentForm({ onUpdateControlEquipment, e
         </Form.Item>
       </div>
     </Form>
+    </Modal>
   );
 }
