@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import "./style.scss";
 import axios from "axios";
-import { Table, Button, Modal } from "antd";
+import { Table, Button, Modal, Form, Input  } from "antd";
 import CreateFarmForm from "./CreateFarmForm";
 import { Link, useNavigate } from "react-router-dom";
-import { PlusOutlined } from "@ant-design/icons";
+import Message from "../../components/Message";
 
 export default function AdManagementFarm() {
-  console.log("aaaaaaaaaaaaaaaaa");
-  const navigate = useNavigate();
   const [farms, setFarms] = useState([]);
   const [showCreateForm, setShowCreateForm] = useState(false);
-  const [editData, setEditData] = useState(null);
   const [expandedFarmInfo, setExpandedFarmInfo] = useState(null);
+  const [openModalEdit, setOpenModalEdit] = useState(false);
+  const [selectedFarm, setSelectedFarm] = useState(null);
+  const [form] = Form.useForm();
 
   useEffect(() => {
     getFarms();
@@ -20,12 +20,12 @@ export default function AdManagementFarm() {
 
   const getFarms = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const accessToken = localStorage.getItem("accessToken");
       const result = await axios.get(
         "http://localhost:3001/api/admin/getAllFarm",
         {
           headers: {
-            token: `Bearer ${token}`,
+            token: `Bearer ${accessToken}`,
           },
         }
       );
@@ -36,22 +36,56 @@ export default function AdManagementFarm() {
     }
   };
 
-  const handleEdit = (farmId) => {
-    // console.log(`Sửa farm có ID: ${farmId}`);
-    const farmToEdit = farms.find((farm) => farm._id === farmId);
-    setEditData(farmToEdit);
-    setShowCreateForm(true);
+  const handleOpenModalEdit = (data) => {
+    setSelectedFarm(data);
+    setOpenModalEdit(true);
+    form.setFieldsValue({
+        name: data.name,
+        address: data.address,
+        description: data.description
+    });
+  };
+  const handleCancelEdit = () => {
+    setOpenModalEdit(false);
+    setSelectedFarm(null);
+    form.resetFields();
   };
 
+  const onFinish = async (data) => {
+    const apiURL = `http://localhost:3001/api/admin/updateFarm/${selectedFarm._id}`;
+    const accessToken = localStorage.getItem("accessToken");
+    try {
+        const res = await axios.put(apiURL, {
+            name: data.name,
+            address: data.address,
+            description: data.description
+          },
+          {
+            headers: {
+              token: `Bearer ${accessToken}`,
+            },
+          }
+        );
+        if (res) {
+            setOpenModalEdit(false);
+            Message.sendSuccess("Cập nhật thành công");
+
+            getFarms();
+        }
+    } catch (error) {
+        console.error(error);
+    }
+  };
+  
   const handleDelete = async (farmId) => {
     try {
-      const token = localStorage.getItem("token");
+      const accessToken = localStorage.getItem("accessToken");
 
       await axios.delete(
         `http://localhost:3001/api/admin/deleteFarm/${farmId}`,
         {
           headers: {
-            token: `Bearer ${token}`,
+            token: `Bearer ${accessToken}`,
           },
         }
       );
@@ -64,7 +98,6 @@ export default function AdManagementFarm() {
 
 
   const handleCreateFarm = () => {
-    setEditData(null);
     setShowCreateForm(true);
   };
 
@@ -72,12 +105,12 @@ export default function AdManagementFarm() {
 
   const handleExpandRow = async (farmId) => {
     try {
-      const token = localStorage.getItem("token");
+      const accessToken = localStorage.getItem("accessToken");
       const result = await axios.get(
         `http://localhost:3001/api/admin/getFarm/${farmId}`,
         {
           headers: {
-            token: `Bearer ${token}`,
+            token: `Bearer ${accessToken}`,
           },
         }
       );
@@ -124,7 +157,7 @@ export default function AdManagementFarm() {
       align: "center",
       render: (_, record) => (
         <div>
-          <Button type="primary" danger onClick={() => handleEdit(record._id)}>
+          <Button type="primary" danger onClick={() => handleOpenModalEdit(record)}>
             Chỉnh sửa
           </Button>{" "}
           <Link to={`/admin-management-devices/${record._id}`}><Button type="primary">Xem thiết bị</Button></Link>{" "}{" "}
@@ -159,16 +192,18 @@ export default function AdManagementFarm() {
           ) : (
             <CreateFarmForm
               onCreateFarm={() => {
-                setShowCreateForm(false);
                 getFarms();
               }}
-              editData={editData}
+              visible = {showCreateForm}
+              setVisible = {setShowCreateForm}
             />
           )}
         </div>
-        <Modal
+      </div>
+      <div className="modal-edit">
+      <Modal
           title="Farm Details"
-          visible={modalVisible}
+          open={modalVisible}
           onCancel={closeModal}
           footer={null}
         >
@@ -186,6 +221,77 @@ export default function AdManagementFarm() {
           )}
         </Modal>
       </div>
+      <div className="modal-edit">
+                <Modal
+                    open={openModalEdit}
+                    title="Chỉnh sửa nông trại"
+                    onCancel={handleCancelEdit}
+                    footer={[
+                        <Button key="back" onClick={handleCancelEdit}>
+                            Hủy
+                        </Button>,
+                        <Button
+                            key="submit"
+                            type="primary"
+                            form="form_update"
+                            htmlType="submit"
+                        >
+                            Xác nhận
+                        </Button>,
+                    ]}
+                >
+                    <Form
+                        id="form_update"
+                        name="basic"
+                        layout="vertical"
+                        onFinish={onFinish}
+                        form={form}
+                        autoComplete="off"
+                    >
+                        <Form.Item
+                            label="Name"
+                            name="name"
+                            initialValue={selectedFarm?.name}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please input name!",
+                                },
+                            ]}
+                        >
+                            <Input />
+                        </Form.Item>
+
+                        <Form.Item
+                            label="Address"
+                            name="address"
+                            initialValue={selectedFarm?.address}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please input address!",
+                                },
+                            ]}
+                        >
+                            <Input />
+                        </Form.Item>
+
+                        <Form.Item
+                            label="Description"
+                            name="description"
+                            initialValue={selectedFarm?.description}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please input description!",
+                                },
+                            ]}
+                        >
+                            <Input />
+                        </Form.Item>
+                    </Form>
+                </Modal>
+            </div>
     </div>
   );
 }
