@@ -47,9 +47,9 @@ export default function CreateFarmForm({ onCreateFarm, visible, setVisible}) {
         <Form.Item label="Địa chỉ" name="address" rules={[{ required: true }]}>
           <Input placeholder="Nhập địa chỉ" />
         </Form.Item>
-        <Form.Item label="Ảnh" name="image" rules={[{ required: true }]}>
+        {/* <Form.Item label="Ảnh" name="image" rules={[{ required: true }]}>
           <Input placeholder="Nhập link ảnh" />
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item label="Mô tả" name="description" rules={[{ required: true }]}>
           <Input placeholder="Nhập mô tả" />
         </Form.Item>
