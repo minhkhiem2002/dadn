@@ -17,6 +17,7 @@ import StatisticalPage from "../pages/StatisticalPage";
 import OTPInputPage from "../pages/OTPInputPage/OTPInputPage";
 import ResetPassword from "../pages/ResetPassword/ResetPassword";
 import { useEffect } from "react";
+import AdInformation from "../pages/AdInformation/AdInformation";
 
 export default function RouteComponent() {
     const navigate = useNavigate();
@@ -132,6 +133,14 @@ export default function RouteComponent() {
             element: (
                 <AdminLayout>
                     <AdManagementUsers />
+                </AdminLayout>
+            ),
+        },
+        {
+            path: "/admin-information-personal/*",
+            element: (
+                <AdminLayout>
+                    <AdInformation />
                 </AdminLayout>
             ),
         },

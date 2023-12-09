@@ -31,10 +31,10 @@ const AdminHeader = () => {
     const menu = (
         <Menu>
             <Menu.Item key="1">
-                <Link to="/information-personal">Thông tin cá nhân</Link>
+                <Link to="/admin-information-personal">Thông tin cá nhân</Link>
             </Menu.Item>
             <Menu.Item key="2">
-                <Link to="/information-personal/change-passwd">
+                <Link to="/admin-information-personal/change-passwd">
                     Thay đổi mật khẩu
                 </Link>
             </Menu.Item>
@@ -71,7 +71,7 @@ const AdminHeader = () => {
                 </div>
                 <div className="wrapper-header__right--dropdown">
                     <Dropdown overlay={menu} placement="bottomRight" arrow>
-                        <Link className="" to="/information-personal">
+                        <Link className="" to="/admin-information-personal">
                             <img
                                 src={imgURL}
                                 alt="avatar"
