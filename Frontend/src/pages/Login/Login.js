@@ -21,7 +21,7 @@ const Login = () => {
             if (response) {
                 localStorage.setItem("userId", response.data.userId);
                 localStorage.setItem("role", response.data.role);
-                localStorage.setItem("token", response.data.access_token);
+                localStorage.setItem("accessToken", response.data.access_token);
 
                 if (!response.data.role && response.data.status === 200) {
                     navigate("/");

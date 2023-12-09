@@ -1,56 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, Modal } from "antd";
 import axios from "axios";
 import "./index.scss";
 
-export default function CreateDataEquipmentForm({ onUpdateDataEquipment, editData , farmID}) {
+export default function CreateDataEquipmentForm({ onUpdateDataEquipment, visible, setVisible , farmID}) {
   const [form] = Form.useForm();
-
-  useEffect(() => {
-    if (editData) {
-      form.setFieldsValue({
-        name: editData.name,
-        key: editData.key,
-        typ: editData.typ,
-        farmId: editData.farmId,
-        min: editData.min,
-        min_action: editData.min_action,
-        max: editData.max,
-        max_action: editData.max_action,
-        auto: editData.auto,
-      });
-    }
-  }, [editData, form]);
 
   const handleSubmit = async (values) => {
     try {
-      const token = localStorage.getItem("token");
-      let response;
-
-      if (editData) {
-        response = await axios.put(
-          `http://localhost:3001/api/dequip/update-equipment/${editData._id}`,
-          values,
-          {
-            headers: {
-              token: `Bearer ${token}`,
-            },
-          }
-        );
-      } else {
-        response = await axios.post(
-          `http://localhost:3001/api/dequip/post/${farmID}`,
-          values,
-          {
-            headers: {
-              token: `Bearer ${token}`,
-            },
-          }
-        );
-      }
-
-      // console.log(response.data);
-      onUpdateDataEquipment(response.data);
+      const accessToken = localStorage.getItem("accessToken");
+      let response = await axios.post(
+        `http://localhost:3001/api/dequip/post/${farmID}`,
+        values,
+        {
+          headers: {
+            token: `Bearer ${accessToken}`,
+          },
+        }
+      );
+    
+      onUpdateDataEquipment();
+      setVisible(false);
       form.resetFields();
     } catch (error) {
       // console.error(error);
@@ -59,10 +29,16 @@ export default function CreateDataEquipmentForm({ onUpdateDataEquipment, editDat
 
   const handleCancel = () => {
     form.resetFields();
-    onUpdateDataEquipment(null);
+    setVisible(false);
   };
 
   return (
+    <Modal
+      open={visible}
+      title="Thêm thiết bị cảm biến"
+      onCancel={handleCancel}
+      footer={null}
+    >
     <Form form={form} layout="vertical" onFinish={handleSubmit}>
       <Form.Item label="Name" name="name" rules={[{ required: true }]}>
         <Input placeholder="Input name ..." />
@@ -91,7 +67,7 @@ export default function CreateDataEquipmentForm({ onUpdateDataEquipment, editDat
       <div className="centered-button">
         <Form.Item>
           <Button type="primary" htmlType="submit">
-            {editData ? "Cập nhật" : "Thêm"}
+            Thêm
           </Button>{" "}
           <Button danger onClick={handleCancel}>
             Huỷ
@@ -99,5 +75,6 @@ export default function CreateDataEquipmentForm({ onUpdateDataEquipment, editDat
         </Form.Item>
       </div>
     </Form>
+    </Modal>
   );
 }
