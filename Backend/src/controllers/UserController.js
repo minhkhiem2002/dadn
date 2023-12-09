@@ -210,7 +210,7 @@ const updateAvatar = async (req, res) => {
 
     try {
     
-      const token = req.headers.token.split(' ')[1]
+      const token = await req.headers.token.split(' ')[1]
         let payload;
         jwt.verify(token, process.env.ACCESS_TOKEN, function (err,user){
             if (err) {
@@ -224,11 +224,13 @@ const updateAvatar = async (req, res) => {
         console.log('ID is',payload.payload.id)
 
       const avatarURL = req.file.path;
+      console.log('Avatar URL', avatarURL)
 
       const response = await UserService.uploadAvatar(payload.payload.id, avatarURL);
   
       return res.status(200).json(response);
     } catch (e) {
+        console.log(e)
         return res.status(404).json({
             message: e
         })
