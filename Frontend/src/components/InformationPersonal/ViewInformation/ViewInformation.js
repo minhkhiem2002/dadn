@@ -82,7 +82,7 @@ export default function ViewInformation() {
             const formData = new FormData();
             formData.append("images", fileList[0].originFileObj);
             try {
-                const token = localStorage.getItem("token");
+                const token = localStorage.getItem("accessToken");
                 setLoading(true);
                 setOpenModal(false);
                 const res = await axios.post(
