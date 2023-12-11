@@ -3,6 +3,7 @@ import "./style.scss";
 import { http } from "../../../utils/http";
 import * as echarts from "echarts";
 import { Table } from "antd";
+import { message } from "antd";
 
 export default function Land() {
   const chartRef = useRef(null);
@@ -41,6 +42,14 @@ export default function Land() {
         const firstValueLand =
           dataWithSequence.length > 0 ? dataWithSequence[0].value : 0;
         // onFirstValueChangeLand(firstValueLand);
+        const maxLand = localStorage.getItem("maxLand");
+        const minLand = localStorage.getItem("minLand");
+        if (maxLand && parseFloat(firstValueLand) > parseFloat(maxLand)) {
+          message.warning("Độ ẩm đất đang vượt quá ngưỡng an toàn!", [2]);
+        }
+        if (minLand && parseFloat(firstValueLand) < parseFloat(minLand)) {
+          message.warning("Độ ẩm đất đang thấp hơn ngưỡng an toàn!", [2]);
+        }
 
         const gaugeOptions = {
           series: [
@@ -205,7 +214,7 @@ export default function Land() {
     };
 
     fetchData();
-    const intervalId = setInterval(fetchData, 5000);
+    const intervalId = setInterval(fetchData, 6000);
     return () => clearInterval(intervalId);
   }, []);
 
