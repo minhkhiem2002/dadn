@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import "./index.scss";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import Message from "../../components/Message";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -28,7 +29,7 @@ const Login = () => {
                 } else if (response.data.role && response.data.status === 200) {
                     navigate("/admin-management-farms");
                 } else {
-                    alert("Login failed");
+                    Message.sendError("Sai Email hoặc Mật khẩu, vui lòng đăng nhập lại!",[2]);
                     // Chỗ này tự làm toast message vô
                 }
             }

@@ -3,6 +3,7 @@ import "./style.scss";
 import { http } from "../../../utils/http";
 import * as echarts from "echarts";
 import { Table } from "antd";
+import { message } from "antd";
 
 export default function Light() {
   const chartRef = useRef(null);
@@ -42,6 +43,15 @@ export default function Light() {
         const firstValue =
           dataWithSequence.length > 0 ? dataWithSequence[0].value : 0;
         // onFirstValueChange(firstValue);
+
+        const maxLight = localStorage.getItem("maxLight");
+        const minLight = localStorage.getItem("minLight");
+        if (maxLight && parseFloat(firstValue) > parseFloat(maxLight)) {
+          message.warning("Ánh sáng đang vượt quá ngưỡng an toàn!", [2]);
+        }
+        if (minLight && parseFloat(firstValue) < parseFloat(minLight)) {
+          message.warning("Ánh sáng đang thấp hơn ngưỡng an toàn!", [2]);
+        }
 
         //chart 1
         const gaugeOptions = {
@@ -262,7 +272,7 @@ export default function Light() {
 
     //fetchdata
     fetchData();
-    const intervalId = setInterval(fetchData, 5000);
+    const intervalId = setInterval(fetchData, 6000);
     return () => clearInterval(intervalId);
   }, []);
 
