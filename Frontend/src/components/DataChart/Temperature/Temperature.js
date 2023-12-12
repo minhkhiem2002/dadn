@@ -3,6 +3,8 @@ import "./style.scss";
 import { http } from "../../../utils/http";
 import * as echarts from "echarts";
 import { Table } from "antd";
+import { message } from "antd";
+import Message from "../../Message";
 
 export default function Temperature() {
   const chartRef = useRef(null);
@@ -41,7 +43,21 @@ export default function Temperature() {
 
         const firstValue =
           dataWithSequence.length > 0 ? dataWithSequence[0].value : 0;
-        // onFirstValueChange(firstValue);
+
+        const maxTemperature = localStorage.getItem("maxTemperature");
+        const minTemperature = localStorage.getItem("minTemperature");
+        if (
+          maxTemperature &&
+          parseFloat(firstValue) > parseFloat(maxTemperature)
+        ) {
+          message.warning("Nhiệt độ đang vượt quá ngưỡng an toàn!", [2]);
+        }
+        if (
+          minTemperature &&
+          parseFloat(firstValue) < parseFloat(minTemperature)
+        ) {
+          message.warning("Nhiệt độ đang thấp hơn ngưỡng an toàn!", [2]);
+        }
 
         //chart 1
         const gaugeOptions = {
@@ -262,7 +278,7 @@ export default function Temperature() {
 
     //fetchdata
     fetchData();
-    const intervalId = setInterval(fetchData, 5000);
+    const intervalId = setInterval(fetchData, 6000);
     return () => clearInterval(intervalId);
   }, []);
 

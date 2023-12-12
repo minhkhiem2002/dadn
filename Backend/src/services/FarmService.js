@@ -42,7 +42,7 @@ const createFarm = (newFarm) => {
             const createFarm = await Farm.create({
                 name,
                 address,
-                image : 'https://media.istockphoto.com/id/863542630/vi/anh/ho%C3%A0ng-h%C3%B4n-m%C3%B9a-h%C3%A8-v%E1%BB%9Bi-chu%E1%BB%93ng-tr%E1%BA%A1i-m%C3%A0u-%C4%91%E1%BB%8F-%E1%BB%9F-v%C3%B9ng-n%C3%B4ng-th%C3%B4n-montana-v%C3%A0-d%C3%A3y-n%C3%BAi-rocky.jpg?s=612x612&w=0&k=20&c=6EaDA4wBhWLYKVK7mhDExYQII8ZD1617vIjQzdr_cTA=0',
+                image : 'https://cdn.tgdd.vn/Files/2021/11/10/1396965/10-nong-trai-da-lat-rong-lon-bao-la-voi-nhieu-goc-song-ao-tuyet-dep-202111101135102355.jpg',
                 description
             })
             if (createFarm) {

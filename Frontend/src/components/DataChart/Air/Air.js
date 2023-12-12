@@ -3,6 +3,7 @@ import "./style.scss";
 import { http } from "../../../utils/http";
 import * as echarts from "echarts";
 import { Table } from "antd";
+import { message } from "antd";
 
 export default function Air() {
   const chartRef = useRef(null);
@@ -41,6 +42,14 @@ export default function Air() {
         const firstValueAir =
           dataWithSequence.length > 0 ? dataWithSequence[0].value : 0;
         // onFirstValueChangeAir(firstValueAir);
+        const maxAir = localStorage.getItem("maxAir");
+        const minAir = localStorage.getItem("minAir");
+        if (maxAir && parseFloat(firstValueAir) > parseFloat(maxAir)) {
+          message.warning("Độ ẩm không khí đang vượt quá ngưỡng an toàn!", [2]);
+        }
+        if (minAir && parseFloat(firstValueAir) < parseFloat(minAir)) {
+          message.warning("Độ ẩm không khí đang thấp hơn ngưỡng an toàn!", [2]);
+        }
 
         const gaugeOptions = {
           series: [
@@ -205,7 +214,7 @@ export default function Air() {
     };
 
     fetchData();
-    const intervalId = setInterval(fetchData, 5000);
+    const intervalId = setInterval(fetchData, 6000);
     return () => clearInterval(intervalId);
   }, []);
 
