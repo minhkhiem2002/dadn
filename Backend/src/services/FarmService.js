@@ -120,10 +120,26 @@ const getAllFarm = () => {
     })
 }
 
+const getAdakey = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const adakey = process.env.ACTIVE_KEY
+            console.log("Adafruit Key", adakey)
+            resolve({
+                status: '200',
+                message: 'Get Adafruit Key Successfully',
+                data: adakey
+            })  
+        } catch(e) {
+            reject(e);
+        }
+    })
+}
 module.exports = {
     getFarm,
     createFarm,
     updateFarm,
     deleteFarm,
-    getAllFarm
+    getAllFarm,
+    getAdakey
 }
