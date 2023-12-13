@@ -9,4 +9,7 @@ router.post('/createFarm',authMiddleware, farmController.createFarm)
 router.put('/updateFarm/:id',authMiddleware, farmController.updateFarm)
 router.delete('/deleteFarm/:id',authMiddleware, farmController.deleteFarm)
 
+router.get('/adakey',farmController.getAdakey)
+
+
 module.exports = router;
